@@ -1,1 +1,4 @@
 node_modules
+build/bundle.js
+build/main.css
+build/*.svg
