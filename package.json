@@ -1,0 +1,33 @@
+{
+  "name": "the-calculating-palico-x",
+  "version": "1.0.0",
+  "description": "browser-based damage calculator for monster hunter gen",
+  "main": "main.js",
+  "dependencies": {
+    "arrive": "^2.3.1",
+    "babel-core": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015-webpack": "^6.4.2",
+    "babel-preset-react": "^6.11.1",
+    "bootstrap": "^3.3.7",
+    "bootstrap-material-design": "^0.5.10",
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "hashids": "^1.1.0",
+    "jquery": "^3.1.0",
+    "node-sass": "^3.8.0",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "sass-loader": "^4.0.0",
+    "style-loader": "^0.13.1",
+    "url": "0.11.0",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Minyoung Choi",
+  "license": "MIT"
+}

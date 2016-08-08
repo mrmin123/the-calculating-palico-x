@@ -1,0 +1,413 @@
+html, body {
+	font-size: 100%;
+	font-family: 'Roboto', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+/* Generic helpers */
+.float-right {
+	float: right;
+	line-height: inherit;
+}
+
+.inline {
+	display: inline;
+}
+
+.top-pad {
+	padding-top: 1rem;
+}
+
+.dotted {
+	border-bottom: 1px dotted #000;
+	text-decoration: none;
+}
+
+/* Generic panel-specific */
+.panel-heading {
+	font-size: 0.9rem;
+}
+
+.panel-body {
+	font-size: 0.75rem;
+}
+
+/* Generic form-specific */
+.form-group {
+	margin-top: 0;
+
+	label {
+		margin-top: 12px;
+		font-size: 0.75rem;
+		color: #000;
+
+	}
+
+	input {
+		font-size: 0.85rem;
+	}
+
+	.form-control {
+		font-size: 0.8rem;
+	}
+}
+
+.form-group.form-group-inline {
+	padding-bottom: 0;
+}
+
+/* Generic checkbox-specific */
+.checkbox {
+	margin: 0;
+}
+
+.checkbox .checkbox-material:before {
+	height: 0;
+	width: 0;
+}
+
+.checkbox .checkbox-material .check, label.checkbox-inline .checkbox-material .check {
+	width: 15px;
+	height: 15px;
+}
+
+.checkbox .checkbox-material .check:before, label.checkbox-inline .checkbox-material .check:before {
+	margin-top: -6px;
+	margin-left: 4px;
+}
+
+/* Material icon sizers */
+.material-icons.md-16 { font-size: 16px; }
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/*******************************/
+/* Calculating Palico X styles */
+/*******************************/
+
+/* Expandable panels */
+.toggle-heading-button {
+	color: #000;
+	&:hover, &:focus {
+		text-decoration: none;
+	}
+}
+
+.toggle-heading-div {
+	color: #000;
+	background-color: #eee;
+
+	&:hover, &:focus {
+		text-decoration: none;
+	}
+}
+
+/* Weapon panel */
+.element-marker {
+	font-size: 0.9rem;
+}
+
+.relic-element-marker {
+	float: left;
+	line-height: 2.4rem;
+}
+
+.relic-awoken-checkbox {
+	margin: -2px 0 12px 0;
+}
+
+/* Monster panel */
+.weakness-summary {
+	font-weight: bold;
+}
+
+.weakness-summary div.row:first-child {
+	font-weight: normal;
+}
+
+/* Modifiers panel */
+.section-header {
+	font-size: 0.7rem;
+	margin: 10px 0 0 0;
+}
+
+.modifiers-group {
+	background-color: #eee;
+}
+
+.modifiers-list .checkbox .modifiers-label {
+	font-size: 0.7rem;
+	color: #777;
+	font-weight: normal;
+	line-height: 1.6rem;
+}
+
+/* Aggregate damage display checkbox */
+.checkbox label.aggregate-label {
+	color: #000;
+	font-size: 0.8rem;
+}
+
+/* Damage table styles */
+.dmg-body {
+	font-size: 1rem;
+
+	.dmg-body-top-pad {
+		margin-top: 20px;
+	}
+
+	.dmg-body-top-pad::before {
+		content: "";
+		width: 85%;
+		margin: 0 auto 0 auto;
+		padding-bottom: 20px;
+		border-top: 1px solid #009688;
+	}
+
+	/* Damage table right-side setup controls */
+	.setup-control-container {
+		float: right;
+		a.btn {
+			margin: 0 1px;
+		}
+		.setup-controls {
+			span {
+				font-size: 0.8rem;
+			}
+
+			&:hover {
+				cursor: pointer;
+			}
+		}
+	}
+
+	/* Modifiers list in damage table */
+	.modifiers-list {
+		margin: 5px 0 10px 0;
+
+		span {
+			margin-left: 5px;
+			font-weight: normal;
+		}
+	}
+
+	/* Actual damage table styling */
+	table.dmg-table {
+		margin: 6px 0 15px 0;
+		font-size: 0.8rem;
+		border-right: 0;
+		border-left: 0;
+
+		.no-border {
+			border: 0;
+		}
+
+		.all-range {
+			border: 3px solid #aaa;
+		}
+
+		thead tr th {
+			font-weight: normal;
+		}
+
+		thead tr th:first-child,
+		tbody tr td:first-child {
+			border-left: 0;
+		}
+
+		thead tr th:last-child,
+		tbody tr td:last-child {
+			border-right: 0;
+		}
+
+		thead tr th:nth-child(n+2) {
+			font-size: 0.75rem;
+			vertical-align: top;
+		}
+
+		tbody tr:nth-child(n+2) td:nth-child(1) {
+			font-size: 0.75rem;
+			vertical-align: middle;
+		}
+
+		tbody tr:nth-child(n+1) td:nth-child(n+1) {
+			vertical-align: middle;
+		}
+
+		tr td:first-child {
+			width: 15rem;
+		}
+
+		tr td:nth-child(2) {
+			width: 7rem;
+		}
+
+		.dmg-td {
+			display: table-cell;
+			text-align: center;
+			line-height: 0.8rem;
+
+			.broken {
+				margin-bottom: -4px;
+
+				label {
+					color: #000;
+					font-size: 0.75rem;
+				}
+			}
+
+		}
+
+		.dmg {
+			font-weight: bold;
+			vertical-align: middle;
+		}
+
+		.element-dmg {
+			font-size: 0.6rem;
+			font-weight: bold;
+			vertical-align: middle;
+
+			i {
+				font-size: 0.5rem;
+				font-weight: normal;
+			}
+		}
+	}
+
+	/* Setup URL box */
+	.setup-url {
+		padding: 0 10px 0 10px;
+		font-size: 0.9rem;
+
+		input {
+			width: 100%;
+			border: 0;
+			cursor: pointer;
+			font-size: 0.9rem;
+			font-family: monospace;
+		}
+	}
+}
+
+/* Sharpness bar styling */
+#sharpness-bar {
+	width: 94px;
+	height: 20px;
+	background-color: #d3d3d3;
+	float: left;
+	clear: both;
+
+	span {
+		display: inline-block;
+		height: 100%;
+		float: left;
+		border-top: 4px solid #d3d3d3;
+		border-bottom: 4px solid #d3d3d3;
+	}
+
+	span:first-child {
+		border-left: 4px solid #d3d3d3;
+	}
+
+	.plus {
+		border-top: 4px solid #939393;
+		border-bottom: 4px solid #939393;
+	}
+
+	.plus-active {
+		border-top: 4px solid #000;
+		border-bottom: 4px solid #000;
+	}
+
+	.red {
+		background-color: #c00c38;
+	}
+
+	.orange {
+		background-color: #e85018;
+	}
+
+	.yellow {
+		background-color: #f0c830;
+	}
+
+	.green {
+		background-color: #58d000;
+	}
+
+	.blue {
+		background-color: #3068e8;
+	}
+
+	.white {
+		background-color: #f0f0f0;
+	}
+
+	.purple {
+		background-color: #c3c;
+	}
+}
+
+/* Element colors */
+.Fire {
+	color: #c00c38;
+}
+
+.Water {
+	color: #0099ff;
+}
+
+.Ice {
+	color: #66ccff;
+}
+
+.Thunder {
+	color: #ff9900;
+}
+
+.Dragon {
+	color: #3cb05d;
+}
+
+.Poison {
+	color: #cc44ff;
+}
+
+.Sleep {
+	color: #9999ff;
+}
+
+.Para {
+	color: #f0c830;
+}
+
+.Blast {
+	color: magenta;
+}
+
+/* Heatmap colors */
+.heat1 {
+	background-color: #ff9999;
+}
+
+.heat2 {
+	background-color: #ffaaaa;
+}
+
+.heat3 {
+	background-color: #ffbbbb;
+}
+
+.heat4 {
+	background-color: #ffcccc;
+}
+
+.heat5 {
+	background-color: #ffdddd;
+}
+
+.heat6 {
+	background-color: #ffeeee;
+}
