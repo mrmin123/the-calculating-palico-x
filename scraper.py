@@ -25,7 +25,7 @@ def scrape_monsters():
                                       from_encoding='utf-8')
 
     # fill in monsterList
-    monsterCount = 0
+    monsterCount = 1
     for link in parsedMonsterList.find_all('a'):
         if link.parent.name == 'hr':
             monsterList.append({
