@@ -182,5 +182,5 @@ weaponIdTracker = 0
 weaponList = {"1": [], "2": [], "3": [], "4": [], "5": [], "6": [], "7": [], "8": [], "9": [], "10": [], "11": []}
 weaponData = {}
 
-# scrape_monsters()
+scrape_monsters()
 scrape_weapons()
