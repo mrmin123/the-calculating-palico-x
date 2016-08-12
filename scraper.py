@@ -93,13 +93,13 @@ def scrape_weapons():
     startUrl = 'http://mhgen.kiranico.com/greatsword/petrified-blade'  # start; first weapon
     # startUrl = 'http://mhgen.kiranico.com/chargeblade/starlight-axe'  # for testing; affinity, elements; last weapon
     # startUrl = 'http://mhgen.kiranico.com/dualblades/cleaving-jaws'  # for testing; dual elements
-    # startUrl = 'http://mhgen.kiranico.com/heavybowgun/crab-buster'  # for testing; bowgun
+    startUrl = 'http://mhgen.kiranico.com/lightbowgun/petrified-shooter'  # for testing; first bowgun
     scrape_weapon(startUrl)
 
 
 def scrape_weapon(url):
     global weaponIdTracker, weaponList, weaponData  # import globals
-    weaponTypes = ['', 'greatsword', 'longsword', 'swordshield', 'dualblades', 'hammer', 'huntinghorn',
+    weaponTypes = ['none', 'greatsword', 'longsword', 'swordshield', 'dualblades', 'hammer', 'huntinghorn',
                    'lance', 'gunlance', 'switchaxe', 'insectglaive', 'chargeblade']
     weaponTypeId = -1
     elementalTypes = ['None', 'Fire', 'Water', 'Ice', 'Thunder', 'Dragon', 'Poison', 'Sleep', 'Para', 'Blast']
@@ -107,7 +107,7 @@ def scrape_weapon(url):
     for wtId, weaponType in enumerate(weaponTypes):
         if weaponType in url:
             weaponTypeId = wtId
-    sleep(0.2)
+    sleep(0.5)
     weaponRaw = requests.get(url)
     parsedWeapon = BeautifulSoup(weaponRaw.content, 'html.parser', from_encoding='utf-8')
     if weaponTypeId > -1:
@@ -117,7 +117,7 @@ def scrape_weapon(url):
         for row in weaponRows:
             # find all weapons on page
             weaponIdTracker += 1
-            log_msg(" + %s : %s" % (weaponIdTracker, row.contents[1].string.strip()))
+            log_msg(" + %s: %s" % (weaponIdTracker, row.contents[1].string.strip()))
             # declare defaults
             affinity = 0
             elements = []
@@ -182,5 +182,5 @@ weaponIdTracker = 0
 weaponList = {"1": [], "2": [], "3": [], "4": [], "5": [], "6": [], "7": [], "8": [], "9": [], "10": [], "11": []}
 weaponData = {}
 
-scrape_monsters()
+# scrape_monsters()
 scrape_weapons()
