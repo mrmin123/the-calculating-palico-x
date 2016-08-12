@@ -89,16 +89,23 @@ def scrape_monsters():
 
 
 def scrape_weapons():
+    global weaponStartUrl, weaponList, weaponData  # import globals
     log_msg("Grabbing weapon list and data")
-    startUrl = 'http://mhgen.kiranico.com/greatsword/petrified-blade'  # start; first weapon
-    # startUrl = 'http://mhgen.kiranico.com/chargeblade/starlight-axe'  # for testing; affinity, elements; last weapon
-    # startUrl = 'http://mhgen.kiranico.com/dualblades/cleaving-jaws'  # for testing; dual elements
-    startUrl = 'http://mhgen.kiranico.com/lightbowgun/petrified-shooter'  # for testing; first bowgun
-    scrape_weapon(startUrl)
+    while len(weaponStartUrl) > 0:
+        scrape_weapon(weaponStartUrl)
+    # generate files since we're done with the last weapon
+    log_msg("Generating json files")
+    log_msg(" + weaponList.json")
+    fmlist = open("build/json/weaponList.json", "w")
+    json.dump(weaponList, fmlist, sort_keys=True)
+
+    log_msg(" + weaponData.json")
+    fmdata = open("build/json/weaponData.json", "w")
+    json.dump(weaponData, fmdata, sort_keys=True)
 
 
 def scrape_weapon(url):
-    global weaponIdTracker, weaponList, weaponData  # import globals
+    global weaponStartUrl, weaponIdTracker, weaponList, weaponData  # import globals
     weaponTypes = ['none', 'greatsword', 'longsword', 'swordshield', 'dualblades', 'hammer', 'huntinghorn',
                    'lance', 'gunlance', 'switchaxe', 'insectglaive', 'chargeblade']
     weaponTypeId = -1
@@ -164,23 +171,21 @@ def scrape_weapon(url):
     nextWeaponA = nextWeaponDiv.find('a')
     if nextWeaponA:
         # continue to next weapon
-        scrape_weapon(nextWeaponA.attrs['href'])
+        weaponStartUrl = nextWeaponA.attrs['href']
     else:
-        # generate files since we're at the last weapon
-        log_msg("Generating json files")
-        log_msg(" + weaponList.json")
-        fmlist = open("build/json/weaponList.json", "w")
-        json.dump(weaponList, fmlist, sort_keys=True)
+        weaponStartUrl = ''
 
-        log_msg(" + weaponData.json")
-        fmdata = open("build/json/weaponData.json", "w")
-        json.dump(weaponData, fmdata, sort_keys=True)
 
+# start url for weapon parser
+weaponStartUrl = 'http://mhgen.kiranico.com/greatsword/petrified-blade'  # start; first weapon
+# weaponStartUrl = 'http://mhgen.kiranico.com/chargeblade/starlight-axe'  # for testing; affinity, elements; last weapon
+# weaponStartUrl = 'http://mhgen.kiranico.com/dualblades/cleaving-jaws'  # for testing; dual elements
+# weaponStartUrl = 'http://mhgen.kiranico.com/lightbowgun/petrified-shooter'  # for testing; first bowgun
 
 # global defaults for weapon data
 weaponIdTracker = 0
 weaponList = {"1": [], "2": [], "3": [], "4": [], "5": [], "6": [], "7": [], "8": [], "9": [], "10": [], "11": []}
 weaponData = {}
 
-scrape_monsters()
+# scrape_monsters()
 scrape_weapons()
