@@ -181,6 +181,8 @@ class CalculatingPalicoXInterface extends React.Component {
         this.handleMonsterSelection = this.handleMonsterSelection.bind(this);
         this.handleMonsterStateSelection = this.handleMonsterStateSelection.bind(this);
         // method related to modifier settings
+        this.modifierMouseOver = this.modifierMouseOver.bind(this);
+        this.modifierMouseLeave = this.modifierMouseLeave.bind(this);
         this.modifierSelection = this.modifierSelection.bind(this);
         // method related to handling monster part breaking
         this.handleMonsterPartBreakToggle = this.handleMonsterPartBreakToggle.bind(this);
@@ -403,6 +405,21 @@ class CalculatingPalicoXInterface extends React.Component {
         } else {
             window.history.replaceState(window.state, '', urlQueryEdit(window.location.href, 'ms', ref.target.value));
         }
+    }
+
+    // method for setting the currModifierGroup array based on mouse hover over modifier. Modifiers
+    // in the currModifierGroup array are highlighted in gray in the modifiers list
+    modifierMouseOver(modifier) {
+        var currModifierGroup = [];
+        this.props.modifiers[modifier].effectGroups.map(effectGroup => {
+            currModifierGroup = currModifierGroup.concat(this.props.modifierGroups[effectGroup]);
+        });
+        this.setState({currModifierGroup: currModifierGroup});
+    }
+
+    // method for clearing currModifierGroup once the mouse stops hovering over a modifier
+    modifierMouseLeave() {
+        this.setState({currModifierGroup: []});
     }
 
     // method for handling any modifier checkbox selections
