@@ -397,7 +397,12 @@ class CalculatingPalicoXInterface extends React.Component {
             selectedMonsterState: ref.target.value
         })
         // update the url since there is only one monster state per page
-        window.history.replaceState(window.state, '', urlQueryEdit(window.location.href, 'ms', ref.target.value));
+        if (ref.target.value == 'Default') {
+            // remove the ms param if going back to Default state
+            window.history.replaceState(window.state, '', urlQueryEdit(window.location.href, 'ms', ''));
+        } else {
+            window.history.replaceState(window.state, '', urlQueryEdit(window.location.href, 'ms', ref.target.value));
+        }
     }
 
     // method for handling any modifier checkbox selections
