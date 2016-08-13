@@ -149,7 +149,7 @@ def scrape_weapon(url):
                 for span in spans:
                     # find individual sharpness bar spans and their widths
                     m = re.search('width:([\d]+)px', span.attrs['style'])
-                    tempSharpness.append(m.group(1))
+                    tempSharpness.append(int(m.group(1)))
                 foundSharpnesses.append(tempSharpness)
             weaponList[str(weaponTypeId)].append({
                 "id": weaponIdTracker,
@@ -159,7 +159,7 @@ def scrape_weapon(url):
                 "id": weaponIdTracker,
                 "name": row.contents[1].string.strip(),
                 "type": weaponType,
-                "attack": row.contents[3].string.strip(),
+                "attack": int(row.contents[3].string.strip()),
                 "elements": elements,
                 "affinity": affinity,
                 "sharpnesses": foundSharpnesses,

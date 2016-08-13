@@ -292,9 +292,9 @@ html, body {
 }
 
 /* Sharpness bar styling */
-#sharpness-bar {
+.sharpness-bar {
 	width: 94px;
-	height: 20px;
+	height: 6px;
 	background-color: #d3d3d3;
 	float: left;
 	clear: both;
@@ -303,22 +303,12 @@ html, body {
 		display: inline-block;
 		height: 100%;
 		float: left;
-		border-top: 4px solid #d3d3d3;
-		border-bottom: 4px solid #d3d3d3;
+		border-top: 2px solid #d3d3d3;
+		border-bottom: 2px solid #d3d3d3;
 	}
 
 	span:first-child {
-		border-left: 4px solid #d3d3d3;
-	}
-
-	.plus {
-		border-top: 4px solid #939393;
-		border-bottom: 4px solid #939393;
-	}
-
-	.plus-active {
-		border-top: 4px solid #000;
-		border-bottom: 4px solid #000;
+		border-left: 2px solid #d3d3d3;
 	}
 
 	.red {
@@ -348,6 +338,10 @@ html, body {
 	.purple {
 		background-color: #c3c;
 	}
+}
+
+.sharpness-bar.active {
+	height: 14px;
 }
 
 /* Element colors */
