@@ -33,6 +33,10 @@
 		{
 		"name": "Crit Skills",
 		"modifiers": [40, 38, 39]
+		},
+		{
+		"name": "Ranged Skills",
+		"modifiers": [65, 66]
 		}
 	],
 	[
@@ -75,12 +79,8 @@
 		"modifiers": [35, 36]
 		},
 		{
-		"name": "Ranged Skills",
-		"modifiers": [65, 66]
-		},
-		{
 		"name": "Misc. Skills",
-		"modifiers": [4, 22, 34, 37]
+		"modifiers": [4, 22, 34, 37, 67]
 		},
 		{
 		"name": "Hunting Horn Buffs",
