@@ -216,7 +216,7 @@ class CalculatingPalicoXInterface extends React.Component {
                 imported: false,
             };
         newSetup.calculatedModifiers = {
-            pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, awk: false, ec: false, sharpness: -1, lsspirit: 0, phialc: 1,
+            pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, cbo: false, ec: false, sharpness: -1, lsspirit: 0, phialc: 1,
             elem: [{eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}]
         };
         let setups = this.state.setups,
@@ -813,7 +813,7 @@ class SetupDamageTable extends React.Component {
         var modData = null,
             selectedModifiers = setup.selectedModifiers,
             calculatedModifiers = {
-                pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, awk: false, ec: false,
+                pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, cbo: false, ec: false,
                 sharpness: this.state.selectedSharpness, lsspirit: this.state.selectedSpirit, phialc: this.state.selectedPhials,
                 elem: [{eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}]
             };
@@ -835,19 +835,18 @@ class SetupDamageTable extends React.Component {
                 })
             }
             // set modifier flags for relevant modifiers
-            if (modData.effectGroups && modData.effectGroups.length > 0) {
-                if (modData.effectGroups.indexOf('groupVirus') > -1) {
-                    calculatedModifiers.vo = true;
-                }
-                if (modData.effectGroups.indexOf('groupWeakEx') > -1) {
-                    calculatedModifiers.wex = true;
-                }
-                if (modData.effectGroups.indexOf('groupAwaken') > -1) {
-                    calculatedModifiers.awk = true;
-                }
-                if (modData.effectGroups.indexOf('groupElemC') > -1) {
-                    calculatedModifiers.ec = true;
-                }
+            if (modifier == 1) {
+                // Virus Overcome active
+                calculatedModifiers.vo = true;
+            } else if (modifier == 4) {
+                // Weakness Exploit active
+                calculatedModifiers.wex = true;
+            } else if (modifier == 40) {
+                // Critical Boost active
+                calculatedModifiers.cbo = true;
+            } else if (modifier == 49) {
+                // Elemental Crit active
+                calculatedModifiers.ec = true;
             }
         });
         setup.calculatedModifiers = calculatedModifiers;
