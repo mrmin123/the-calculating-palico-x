@@ -1133,10 +1133,13 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     weapon.affinity = isNaN(weapon.affinity) || weapon.affinity === '' ? 0 : parseInt(weapon.affinity);
 
     // raw power calculation function
-    var pPwr = function(attack, affinity, sharpness, modmul, modadd) {
+    var pPwr = function(attack, affinity, sharpness, modmul, modadd, critboost) {
         // limit affinity to max 100%
         if (affinity > 100) { affinity = 100; }
-        return Math.floor(((attack + modadd) * (1 + 0.25 * (affinity/100))) * sharpness * (1 + modmul));
+        // set critical multiplier
+        critamt = 0.25
+        if (critboost) { critamt = 0.4; }
+        return Math.floor(((attack + modadd) * (1 + critamt * (affinity/100))) * sharpness * (1 + modmul));
     }
     // raw elemental power calculation function
     var ePwr = function(attack, affinity, ecmod, sharpness) {
@@ -1208,10 +1211,10 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     var sharpnessMod = [0.5, 0.75, 1.0, 1.05, 1.2, 1.32, 1.45];
     var sharpnessModE = [0.25, 0.5, 0.75, 1.0, 1.0625, 1.125, 1.2];
 
-    var pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul, modifiers.pAdd);
+    var pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul, modifiers.pAdd, modifiers.cbo);
     // special considerations: switch axes
     if (weaponType.id == 9) {
-        var pwrSACharge = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd);
+        var pwrSACharge = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd, modifiers.cbo);
     }
     var epwrs = [];
     var etype = [];
