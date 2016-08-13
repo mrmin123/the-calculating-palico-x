@@ -177,20 +177,10 @@ class CalculatingPalicoXInterface extends React.Component {
         // methods related to weapon settings
         this.handleWeaponTypeSelection = this.handleWeaponTypeSelection.bind(this);
         this.handleWeaponSelection = this.handleWeaponSelection.bind(this);
-        // methods related to relic weapon settings
-        this.handleChangeRelicAttack = this.handleChangeRelicAttack.bind(this);
-        this.handleChangeRelicAffinity = this.handleChangeRelicAffinity.bind(this);
-        this.handleChangeRelicElementAttack = this.handleChangeRelicElementAttack.bind(this);
-        this.handleChangeRelicElementType = this.handleChangeRelicElementType.bind(this);
-        this.handleChangeRelicAwakenRequired = this.handleChangeRelicAwakenRequired.bind(this);
-        this.handleChangeRelicPhial = this.handleChangeRelicPhial.bind(this);
-        this.handleChangeRelicSharpness = this.handleChangeRelicSharpness.bind(this);
         // methods related to monster settings
         this.handleMonsterSelection = this.handleMonsterSelection.bind(this);
         this.handleMonsterStateSelection = this.handleMonsterStateSelection.bind(this);
-        // methods related to modifier settings
-        this.modifierMouseOver = this.modifierMouseOver.bind(this);
-        this.modifierMouseLeave = this.modifierMouseLeave.bind(this);
+        // method related to modifier settings
         this.modifierSelection = this.modifierSelection.bind(this);
         // method related to handling monster part breaking
         this.handleMonsterPartBreakToggle = this.handleMonsterPartBreakToggle.bind(this);
@@ -222,7 +212,6 @@ class CalculatingPalicoXInterface extends React.Component {
                 selectedWeapon: null,
                 selectedModifiers: [],
                 imported: false,
-                relicSharpnessChanged: false
             };
         newSetup.calculatedModifiers = {
             pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, awk: false, ec: false, sharpness: -1, lsspirit: 0, phialc: 1,
@@ -259,27 +248,11 @@ class CalculatingPalicoXInterface extends React.Component {
             newSetup.imported = true;
             newSetup.selectedWeaponType = importedSetup[0];
             newSetup.selectedWeapon = importedSetup[1];
+            newSetup.selectedWeaponData = this.props.weaponData[importedSetup[1]];
             newSetup.selectedModifiers = importedSetupModifiers;
             newSetup.calculatedModifiers.sharpness = importedSetup[9];
             newSetup.calculatedModifiers.lsspirit = importedSetup[10];
             newSetup.calculatedModifiers.phialc = importedSetup[11];
-            // deep copy selectedWeaponData from this.props.weaponData, otherwise editing relic values will
-            // replace values in this.props.weaponData
-            newSetup.selectedWeaponData = $.extend(true, {}, this.props.weaponData[importedSetup[1]]);
-            // retrieve selected weapon data, and update with relic info if necessary
-            if (importedSetup[1] > 6000) {
-                newSetup.selectedWeaponData.attack = importedSetup[2];
-                newSetup.selectedWeaponData.affinity = importedSetup[4] == 1 ? importedSetup[3] * -1 : importedSetup[3];
-                newSetup.selectedWeaponData.elements[0].attack = importedSetup[5];
-                newSetup.selectedWeaponData.elements[0].id = importedSetup[6];
-                newSetup.selectedWeaponData.elements[0].name = elementalTypes[importedSetup[6]];
-                newSetup.selectedWeaponData.awakenRequired = importedSetup[7] == 1 ? true : false;
-                var tempSharpness = newSetup.selectedWeaponData.sharpness.slice();
-                newSetup.selectedWeaponData.sharpness.map((sharpness, i) => {
-                    tempSharpness[i] = i > importedSetup[8] ? 0 : 1;
-                })
-                newSetup.selectedWeaponData.sharpness = tempSharpness;
-            }
             // add new setup and push to state obj
             setups.push(newSetup);
             codes.push('');
@@ -407,88 +380,6 @@ class CalculatingPalicoXInterface extends React.Component {
         });
     }
 
-    // method for handling the relic weapon attack value change
-    handleChangeRelicAttack(ref) {
-        let selectedWeaponData = this.state.setups[this.state.selectedSetup].selectedWeaponData,
-            value = parseInt(ref.target.value);
-        if (value < 1) {
-            value = 1;
-        } else if (value > 2000) {
-            value = 2000;
-        } else if (isNaN(value)) {
-            value = 0;
-        }
-        selectedWeaponData.attack = value;
-        this.updateSetup(this.state.selectedSetup, ['selectedWeaponData', 'relicSharpnessChanged', 'imported'], [selectedWeaponData, false, false]);
-    }
-
-    // method for handling the relic weapon affinity value change
-    handleChangeRelicAffinity(ref) {
-        let selectedWeaponData = this.state.setups[this.state.selectedSetup].selectedWeaponData,
-            value = ref.target.value;
-        if (value < -100) {
-            value = -100;
-        } else if (value > 100) {
-            value = 100;
-        }
-        if (!isNaN(value)) {
-            selectedWeaponData.affinity = value;
-            this.updateSetup(this.state.selectedSetup, ['selectedWeaponData', 'relicSharpnessChanged', 'imported'], [selectedWeaponData, false, false]);
-        }
-    }
-
-    // method for handling the relic weapon elemental attack value change
-    handleChangeRelicElementAttack(ref) {
-        let selectedWeaponData = this.state.setups[this.state.selectedSetup].selectedWeaponData,
-            value = parseInt(ref.target.value);
-        if (value < 0) {
-            value = 0;
-        } else if (value > 1000) {
-            value = 1000;
-        } else if (isNaN(value)) {
-            value = 0;
-        }
-        selectedWeaponData.elements[0].attack = value;
-        this.updateSetup(this.state.selectedSetup, ['selectedWeaponData', 'relicSharpnessChanged', 'imported'], [selectedWeaponData, false, false]);
-    }
-
-    // method for handling the relic weapon elemental attack type change
-    handleChangeRelicElementType(ref) {
-        let selectedWeaponData = this.state.setups[this.state.selectedSetup].selectedWeaponData,
-            value = parseInt(ref.target.value);
-        selectedWeaponData.elements[0].id = value;
-        selectedWeaponData.elements[0].name = elementalTypes[value];
-        this.updateSetup(this.state.selectedSetup, ['selectedWeaponData', 'relicSharpnessChanged', 'imported'], [selectedWeaponData, false, false]);
-    }
-
-    // method for handling the relic weapon elemental attack awoken required checkbox change
-    handleChangeRelicAwakenRequired() {
-        let selectedWeaponData = this.state.setups[this.state.selectedSetup].selectedWeaponData;
-        selectedWeaponData.elements[0].awakenRequired = selectedWeaponData.elements[0].awakenRequired ? false : true;
-        this.updateSetup(this.state.selectedSetup, ['selectedWeaponData', 'relicSharpnessChanged', 'imported'], [selectedWeaponData, false, false]);
-    }
-
-    // method for handling the relic weapon phial type value change
-    handleChangeRelicPhial(ref) {
-        let selectedWeaponData = this.state.setups[this.state.selectedSetup].selectedWeaponData;
-        selectedWeaponData.phial = ref.target.value;
-        this.updateSetup(this.state.selectedSetup, ['selectedWeaponData', 'relicSharpnessChanged', 'imported'], [selectedWeaponData, false, false]);
-    }
-
-    // method for handling the relic weapon max sharpness value change
-    handleChangeRelicSharpness(ref) {
-        let selectedWeaponData = this.state.setups[this.state.selectedSetup].selectedWeaponData,
-            value = parseInt(ref.target.value);
-        selectedWeaponData.sharpness.map((sharp, id) => {
-            if (id > value) {
-                selectedWeaponData.sharpness[id] = 0;
-            } else {
-                selectedWeaponData.sharpness[id] = 1;
-            }
-        })
-        this.updateSetup(this.state.selectedSetup, ['selectedWeaponData', 'relicSharpnessChanged', 'imported'], [selectedWeaponData, true, false]);
-    }
-
     // method for handling the monster dropdown selection
     handleMonsterSelection(ref) {
         this.setState({
@@ -507,21 +398,6 @@ class CalculatingPalicoXInterface extends React.Component {
         })
         // update the url since there is only one monster state per page
         window.history.replaceState(window.state, '', urlQueryEdit(window.location.href, 'ms', ref.target.value));
-    }
-
-    // method for setting the currModifierGroup array based on mouse hover over modifier. Modifiers
-    // in the currModifierGroup array are highlighted in gray in the modifiers list
-    modifierMouseOver(modifier) {
-        var currModifierGroup = [];
-        this.props.modifiers[modifier].effectGroups.map(effectGroup => {
-            currModifierGroup = currModifierGroup.concat(this.props.modifierGroups[effectGroup]);
-        });
-        this.setState({currModifierGroup: currModifierGroup})
-    }
-
-    // method for clearing currModifierGroup once the mouse stops hovering over a modifier
-    modifierMouseLeave() {
-        this.setState({currModifierGroup: []});
     }
 
     // method for handling any modifier checkbox selections
@@ -554,7 +430,6 @@ class CalculatingPalicoXInterface extends React.Component {
     }
 
     handleMonsterPartBreakToggle(i) {
-        console.log(i);
         let selectedMonsterBrokenParts = this.state.selectedMonsterBrokenParts;
         if (selectedMonsterBrokenParts.indexOf(i) > -1) {
             selectedMonsterBrokenParts.splice(selectedMonsterBrokenParts.indexOf(i), 1);
@@ -659,113 +534,31 @@ class CalculatingPalicoXInterface extends React.Component {
                                                 <div className="col-xs-6 col-sm-6 text-right">Sharpness</div>
                                                 <div className="col-xs-6 col-sm-6">
                                                     <div id="sharpness-bar">
-                                                        <span style={{width: selectedWeaponData.sharpness[0]}} className="red"></span>
-                                                        <span style={{width: selectedWeaponData.sharpness[1]}} className="orange"></span>
-                                                        <span style={{width: selectedWeaponData.sharpness[2]}} className="yellow"></span>
-                                                        <span style={{width: selectedWeaponData.sharpness[3]}} className="green"></span>
-                                                        <span style={{width: selectedWeaponData.sharpness[4]}} className="blue"></span>
-                                                        <span style={{width: selectedWeaponData.sharpness[5]}} className="white"></span>
-                                                        <span style={{width: selectedWeaponData.sharpness[6]}} className="purple"></span>
-                                                        <span style={{width: selectedWeaponData.sharpnessPlus[0]}} className={"red plus" + (sharpnessPlusOne ? '-active' : '')}></span>
-                                                        <span style={{width: selectedWeaponData.sharpnessPlus[1]}} className={"orange plus" + (sharpnessPlusOne ? '-active' : '')}></span>
-                                                        <span style={{width: selectedWeaponData.sharpnessPlus[2]}} className={"yellow plus" + (sharpnessPlusOne ? '-active' : '')}></span>
-                                                        <span style={{width: selectedWeaponData.sharpnessPlus[3]}} className={"green plus" + (sharpnessPlusOne ? '-active' : '')}></span>
-                                                        <span style={{width: selectedWeaponData.sharpnessPlus[4]}} className={"blue plus" + (sharpnessPlusOne ? '-active' : '')}></span>
-                                                        <span style={{width: selectedWeaponData.sharpnessPlus[5]}} className={"white plus" + (sharpnessPlusOne ? '-active' : '')}></span>
-                                                        <span style={{width: selectedWeaponData.sharpnessPlus[6]}} className={"purple plus" + (sharpnessPlusOne ? '-active' : '')}></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[0][0]}} className="red"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[0][1]}} className="orange"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[0][2]}} className="yellow"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[0][3]}} className="green"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[0][4]}} className="blue"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[0][5]}} className="white"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[0][6]}} className="purple"></span>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    : null}
-                                    {selectedWeapon > 6000 ?
-                                        <div>
-                                            <div className="row">
-                                                <div className="col-xs-12">
-                                                    <div className="form-group">
-                                                        <label className="col-xs-3 col-sm-6 text-right">Damage</label>
-                                                        <div className="col-xs-6 col-sm-2">
-                                                            <input className="form-control" min={1} max={2000} type="number" value={selectedWeaponData.attack} onChange={this.handleChangeRelicAttack} />
-                                                        </div>
+                                                    <div id="sharpness-bar">
+                                                        <span style={{width: selectedWeaponData.sharpnesses[1][0]}} className="red"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[1][1]}} className="orange"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[1][2]}} className="yellow"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[1][3]}} className="green"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[1][4]}} className="blue"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[1][5]}} className="white"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[1][6]}} className="purple"></span>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-xs-12">
-                                                    <div className="form-group">
-                                                        <label className="col-xs-3 col-sm-6 text-right">Affinity</label>
-                                                        <div className="col-xs-6 col-sm-2">
-                                                            <input className="form-control" min={-100} max={100} type="number" value={selectedWeaponData.affinity} onChange={this.handleChangeRelicAffinity} />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-xs-12">
-                                                    <div className="form-group">
-                                                        <label className="col-xs-3 col-sm-6 text-right">Element</label>
-                                                        <div className="col-xs-4 col-sm-2">
-                                                            <input className="form-control" min={0} max={1000} type="number" value={selectedWeaponData.elements[0].attack} onChange={this.handleChangeRelicElementAttack} />
-                                                        </div>
-                                                        <div className="relic-element-marker">
-                                                            <i className={"fa element-marker " + (!selectedWeaponData.elements[0].awakenRequired ? "fa-circle " : (selectedModifiers.indexOf(3) > -1 ? "fa-circle " : "fa-circle-o ")) + selectedWeaponData.elements[0].name}></i>
-                                                        </div>
-                                                        <div className="col-xs-4 col-sm-2">
-                                                            <select className="form-control" value={elementalTypes.indexOf(selectedWeaponData.elements[0].name)} onChange={this.handleChangeRelicElementType}>
-                                                                {elementalTypes.map((element, i) => {
-                                                                    return (<option key={i} value={i}>{element}</option>);
-                                                                })}
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row">
-                                                <div className="col-xs-12">
-                                                    <div className="form-group">
-                                                        <label className="col-xs-12 checkbox">
-                                                            <div className="col-xs-3 col-sm-6 text-right">Awoken required</div>
-                                                            <div className="col-xs-4 col-sm-2 relic-awoken-checkbox">
-                                                                <input type="checkbox" checked={selectedWeaponData.elements[0].awakenRequired} onChange={this.handleChangeRelicAwakenRequired} />
-                                                                <span className="checkbox-material"><span className="check"></span></span>
-                                                            </div>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {selectedWeaponType == 9 || selectedWeaponType == 10 ?
-                                                <div className="row">
-                                                    <div className="col-xs-12">
-                                                        <div className="form-group">
-                                                            <label className="col-xs-3 col-sm-6 text-right">Phials</label>
-                                                            <div className="col-xs-4 col-sm-2">
-                                                                <select className="form-control" value={selectedWeaponData.phial} onChange={this.handleChangeRelicPhial}>
-                                                                    {selectedWeaponType == 9 ?
-                                                                        saxePhials.map((phial, i) => {
-                                                                            return (<option key={i} value={phial}>{phial}</option>);
-                                                                        })
-                                                                    :
-                                                                        cbladePhials.map((phial, i) => {
-                                                                            return (<option key={i} value={phial}>{phial}</option>);
-                                                                        })
-                                                                    }
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            : null}
-                                            <div className="row">
-                                                <div className="col-xs-12">
-                                                    <div className="form-group">
-                                                        <label className="col-xs-3 col-sm-6 text-right">Max Sharpness</label>
-                                                        <div className="col-xs-4 col-sm-2">
-                                                            <select className="form-control" value={selectedWeaponData.sharpness.lastIndexOf(1)} onChange={this.handleChangeRelicSharpness}>
-                                                                {sharpnesses.map((sharpness, i) => {
-                                                                    return (<option key={i} value={i}>{sharpness}</option>);
-                                                                })}
-                                                            </select>
-                                                        </div>
+                                                    <div id="sharpness-bar">
+                                                        <span style={{width: selectedWeaponData.sharpnesses[2][0]}} className="red"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[2][1]}} className="orange"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[2][2]}} className="yellow"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[2][3]}} className="green"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[2][4]}} className="blue"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[2][5]}} className="white"></span>
+                                                        <span style={{width: selectedWeaponData.sharpnesses[2][6]}} className="purple"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -923,9 +716,7 @@ class SetupDamageTable extends React.Component {
             selectedMonsterBrokenParts: this.props.selectedMonsterBrokenParts,
             setup: this.props.setup,
             setupInfo: this.props.setupInfo,
-            sharpnessScale: [],
-            sharpnessPlusScale: [],
-            sharpnessPlusOne: (this.props.setup.selectedModifiers.indexOf(2) > -1 || this.props.setup.selectedModifiers.indexOf(4) > -1 ? true : false),
+            sharpnessPlus: 0, //(this.props.setup.selectedModifiers.indexOf(2) > -1 || this.props.setup.selectedModifiers.indexOf(4) > -1 ? true : false),
             selectedSharpness: this.props.setup.calculatedModifiers.sharpness,
             selectedSharpnessFlag: false,
             selectedSpirit: this.props.setup.calculatedModifiers.lsspirit,
@@ -935,7 +726,7 @@ class SetupDamageTable extends React.Component {
             tableValues: null,
             code: null
         };
-        this.calculateSharpnessScales = this.calculateSharpnessScales.bind(this);
+        this.setSelectedSharpness = this.setSelectedSharpness.bind(this);
         this.calculateModifiers = this.calculateModifiers.bind(this);
         this.calculateTable = this.calculateTable.bind(this);
         this.setMinMax = this.setMinMax.bind(this);
@@ -947,12 +738,12 @@ class SetupDamageTable extends React.Component {
     }
 
     componentDidMount() {
-        // fire off calculateSharpnessScales on mount (chains into calculateModifiers())
-        this.calculateSharpnessScales(this.state.setup.selectedWeaponData.sharpness, this.state.setup.selectedWeaponData.sharpnessPlus, this.props.setup.selectedModifiers);
+        // fire off setSelectedSharpness on mount (chains into calculateModifiers())
+        this.setSelectedSharpness(this.state.setup.selectedWeaponData.sharpnesses, this.props.setup.selectedModifiers);
     }
 
     componentWillReceiveProps(nextProps) {
-        // fire off calculateSharpnessScales on props upate (chains into calculateModifiers())
+        // fire off setSelectedSharpness on props upate (chains into calculateModifiers())
         this.setState({
             showAggregateDmg: nextProps.showAggregateDmg,
             selectedMonsterData: nextProps.selectedMonsterData,
@@ -962,28 +753,15 @@ class SetupDamageTable extends React.Component {
             setupInfo: nextProps.setupInfo,
             tableValues: null // reset tableValues so the renderer doesn't get confused grabbing data from old data
         }, () => {
-            this.calculateSharpnessScales(this.state.setup.selectedWeaponData.sharpness, this.state.setup.selectedWeaponData.sharpnessPlus, nextProps.setup.selectedModifiers);
+            this.setSelectedSharpness(this.state.setup.selectedWeaponData.sharpnesses, nextProps.setup.selectedModifiers);
         });
     }
 
-    // method figures out the list of sharpnesses available in dropdown of damage table
-    //  sharpness         : sharpness scale from weaponData
-    //  sharpnessPlus     : sharpness +1 scale from weaponData
+    // method to figure out list of sharpnesses in dropdown
+    //  sharpnesses       : sharpness scales from weaponData
     //  selectedModifiers : selectedModifiers from setup
-    calculateSharpnessScales(sharpness, sharpnessPlus, selectedModifiers) {
-        let sharpnessScale = [],
-            sharpnessPlusScale = [],
-            selectedSharpnessFlag = this.state.selectedSharpnessFlag;
-        sharpnesses.map((sharp, i) => {
-            let sharpnessAdded = false;
-            if (sharpness[i]) {
-                sharpnessScale.push(sharpness[i]);
-                sharpnessAdded = true;
-            }
-            if (sharpnessAdded || sharpnessPlus[i]) {
-                sharpnessPlusScale.push(sharpnessPlus[i]);
-            }
-        });
+    setSelectedSharpness(sharpnesses, selectedModifiers) {
+        let selectedSharpnessFlag = this.state.selectedSharpnessFlag;
         // set selectedSharpness selection based on selected weapon/relic and import flag
         let selectedSharpness,
             sharpnessPlusOneActive = selectedModifiers.indexOf(2) > -1 && selectedModifiers.indexOf(4) > -1 ? true : false;
@@ -991,23 +769,16 @@ class SetupDamageTable extends React.Component {
             // if importing a setup, set sharpness to whatever is in the setup
             selectedSharpness = this.state.setup.calculatedModifiers.sharpness;
         } else {
-            if (this.state.setup.selectedWeapon < 6000) {
-                // for non-relics, always set sharpness to max possible if not an import
-                selectedSharpness = sharpnessPlusOneActive ? sharpnessPlusScale.length - 1 : sharpnessScale.length - 1;
+            // otherwise, always set sharpness to max possible
+            console.log('not imported');
+            if (sharpnessPlusOneActive) {
+                selectedSharpness = sharpnesses[1].lastIndexOf(0) > -1 ? sharpnesses[1].lastIndexOf(0) - 1 : 5;
             } else {
-                // for relics...
-                if (this.state.setup.relicSharpnessChanged) {
-                    // ... if the relic max sharpness has changed, set sharpness to new max...
-                    selectedSharpness = sharpnessPlusOneActive ? sharpnessPlusScale.length - 1 : sharpnessScale.length - 1;
-                } else {
-                    // ... or if relic max sharpness has not changed, keep the old set sharpness
-                    selectedSharpness = this.state.setup.calculatedModifiers.sharpness != -1 ? this.state.setup.calculatedModifiers.sharpness : (sharpnessPlusOneActive ? sharpnessPlusScale.length - 1 : sharpnessScale.length - 1);
-                }
+                selectedSharpness = sharpnesses[0].lastIndexOf(0) > -1 ? sharpnesses[0].lastIndexOf(0) - 1 : 5;
             }
         }
+        console.log(selectedSharpness);
         this.setState({
-            sharpnessScale: sharpnessScale,
-            sharpnessPlusScale: sharpnessPlusScale,
             selectedSharpness: selectedSharpness
         }, () => {
             this.calculateModifiers(); // fire calculateModifiers after setting state
@@ -1062,7 +833,7 @@ class SetupDamageTable extends React.Component {
         setup.calculatedModifiers = calculatedModifiers;
         this.setState({
             setup: setup,
-            sharpnessPlusOne: selectedModifiers.indexOf(2) > -1 || selectedModifiers.indexOf(4) > -1 ? true : false,
+            sharpnessPlus: 0,
             calculatedModifiers: calculatedModifiers
         }, () => {
             this.calculateTable();
@@ -1226,9 +997,7 @@ class SetupDamageTable extends React.Component {
             selectedSpirit = this.state.selectedSpirit,
             selectedPhials = this.state.selectedPhials,
             setupInfo = this.state.setupInfo;
-        var sharpnessPlusOne = this.state.sharpnessPlusOne,
-            sharpnessScale = this.state.sharpnessScale,
-            sharpnessPlusScale = this.state.sharpnessPlusScale,
+        var sharpnessPlus = this.state.sharpnessPlus,
             showAggregateDmg = this.state.showAggregateDmg;
         var tableValues = this.state.tableValues;
         return (
@@ -1246,12 +1015,10 @@ class SetupDamageTable extends React.Component {
                         <label className="col-xs-4 col-sm-1 text-right">Sharpness</label>
                         <div className="col-xs-5 col-sm-2">
                             <select className="form-control" value={selectedSharpness} onChange={this.handleSharpnessSelection}>
-                                {sharpnessPlusOne ?
-                                    sharpnessPlusScale.map((sharpness, i) => {
-                                        return (<option key={i} value={i}>{sharpnesses[i]}</option>);
-                                    })
-                                :
-                                    sharpnessScale.map((sharpness, i) => {
+                                {
+                                    selectedWeaponData.sharpnesses[sharpnessPlus].filter(sharpness => {
+                                        return (sharpness > 0);
+                                    }).map((sharpness, i) => {
                                         return (<option key={i} value={i}>{sharpnesses[i]}</option>);
                                     })
                                 }
