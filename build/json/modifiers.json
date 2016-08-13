@@ -63,7 +63,7 @@
 	"62": {"name": "Dragon Atk +2", "effectGroups": ["groupEDragon"], "dAdd": 0, "dMul": 0, "eAdd": 60, "eMul": 0.1, "eType": 5, "aff": 0, "desc": "increase dragon element x1.1 +60"},
 	"63": {"name": "Dragon Atk +1", "effectGroups": ["groupEDragon"], "dAdd": 0, "dMul": 0, "eAdd": 40, "eMul": 0.05, "eType": 5, "aff": 0, "desc": "increase dragon element x1.05 +40"},
 	"64": {"name": "Dragon Atk Down", "effectGroups": ["groupEDragon"], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": -0.25, "eType": 5, "aff": 0, "desc": "decrease dragon element x0.75"},
-	"65": {"name": "Artillery Expert", "effectGroups": ["groupArty"], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": 0.2, "eType": -1, "aff": 0, "desc": ""},
-	"66": {"name": "Artillery Novice", "effectGroups": ["groupArty"], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": 0.1, "eType": -1, "aff": 0, "desc": ""},
+	"65": {"name": "Artillery Expert", "effectGroups": ["groupArty"], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase gunlance shell attack x1.2, charge blade finisher finisher x1.3 (not implemented)"},
+	"66": {"name": "Artillery Novice", "effectGroups": ["groupArty"], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase gunlance shell attack x1.1, charge blade finisher finisher x1.15 (not implemented)"},
 	"67": {"name": "Resentment", "effectGroups": [], "dAdd": 20, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase attack +20 when health is red"}
 }
