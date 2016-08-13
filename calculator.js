@@ -71,7 +71,7 @@ class CalculatingPalicoX extends React.Component {
                 let setupsSplit = tempHref.query.s.split('.');
                 setupsSplit.map((setup, i) => {
                     let setupArray = hashids.decode(setup);
-                    if (setupArray && setupArray.length >= 12) {
+                    if (setupArray && setupArray.length >= 5) {
                         importedSetups.s.push(setupArray);
                     }
                 })
@@ -244,15 +244,15 @@ class CalculatingPalicoXInterface extends React.Component {
             scrollToTop(); // scroll to top so the user doesn't have to manually do so
         } else {
             // fill in values from loaded setup
-            let importedSetupModifiers = importedSetup.slice(12);
+            let importedSetupModifiers = importedSetup.slice(5);
             newSetup.imported = true;
             newSetup.selectedWeaponType = importedSetup[0];
             newSetup.selectedWeapon = importedSetup[1];
             newSetup.selectedWeaponData = this.props.weaponData[importedSetup[1]];
             newSetup.selectedModifiers = importedSetupModifiers;
-            newSetup.calculatedModifiers.sharpness = importedSetup[9];
-            newSetup.calculatedModifiers.lsspirit = importedSetup[10];
-            newSetup.calculatedModifiers.phialc = importedSetup[11];
+            newSetup.calculatedModifiers.sharpness = importedSetup[2];
+            newSetup.calculatedModifiers.lsspirit = importedSetup[3];
+            newSetup.calculatedModifiers.phialc = importedSetup[4];
             // add new setup and push to state obj
             setups.push(newSetup);
             codes.push('');
@@ -502,7 +502,7 @@ class CalculatingPalicoXInterface extends React.Component {
                                             </div>
                                         </div>
                                     </div>
-                                    {selectedWeapon < 6000 && selectedWeaponData ?
+                                    {selectedWeaponData ?
                                         <div>
                                             <div className="row top-pad">
                                                 <div className="col-xs-6 col-sm-6 text-right">Damage</div>
@@ -929,20 +929,6 @@ class SetupDamageTable extends React.Component {
             code = '';
         settings.push(this.state.setup.selectedWeaponType);
         settings.push(this.state.setup.selectedWeapon);
-        if (this.state.setup.selectedWeapon > 6000) {
-            let selectedWeaponData = this.state.setup.selectedWeaponData;
-            settings = settings.concat([
-                selectedWeaponData.attack,
-                Math.abs(selectedWeaponData.affinity),
-                (selectedWeaponData.affinity < 0 ? 1 : 0),
-                selectedWeaponData.elements[0].attack,
-                selectedWeaponData.elements[0].id,
-                (selectedWeaponData.elements[0].awakenRequired ? 1 : 0),
-                selectedWeaponData.sharpness.lastIndexOf(1)
-            ]);
-        } else {
-            settings = settings.concat([0, 0, 0, 0, 0, 0, 0]);
-        }
         settings = settings.concat([this.state.selectedSharpness, this.state.selectedSpirit, this.state.selectedPhials]);
         settings = settings.concat(this.state.setup.selectedModifiers);
         code = hashids.encode(settings);
@@ -1128,10 +1114,10 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     weapon.affinity = isNaN(weapon.affinity) || weapon.affinity === '' ? 0 : parseInt(weapon.affinity);
 
     // raw power calculation function
-    var pPwr = function(attack, affinity, modifier, sharpness, modmul, modadd) {
+    var pPwr = function(attack, affinity, sharpness, modmul, modadd) {
         // limit affinity to max 100%
         if (affinity > 100) { affinity = 100; }
-        return Math.floor((((attack / modifier) + modadd) * (1 + 0.25 * (affinity/100)))  * sharpness * (1 + modmul));
+        return Math.floor(((attack + modadd) * (1 + 0.25 * (affinity/100))) * sharpness * (1 + modmul));
     }
     // raw elemental power calculation function
     var ePwr = function(attack, affinity, ecmod, sharpness) {
@@ -1159,7 +1145,7 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     }
 
     // special considerations: charge blades
-    var cb_Exp = function(attackName, attack, modifier, modmul, modadd, res, phialc, phialt) {
+    var cb_Exp = function(attackName, attack, modmul, modadd, res, phialc, phialt) {
         if (phialt == 'Impact') {
             var modlo = 0.05;
             var modhi = 0.1;
@@ -1169,24 +1155,24 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
             var modhi = 3.5;
         }
         if (attackName == 'Sword: Return Stroke' || attackName == 'Shield Attack' || attackName == 'Axe: Element Discharge 1' || attackName == 'Axe: Element Discharge 1 (Boost Mode)' || attackName == 'Axe: Dash Element Discharge 1' || attackName == 'Axe: Dash Element Discharge 1 (Boost Mode)') {
-            return cb_ExpEq(attack, modifier, modmul, modadd, res, modlo, 1, 1);
+            return cb_ExpEq(attack, modmul, modadd, res, modlo, 1, 1);
         }
         else if (attackName == 'Axe: Element Discharge 2' || attackName == 'Axe: Element Discharge 2 (Boost Mode)') {
-            return cb_ExpEq(attack, modifier, modmul, modadd, res, modlo, 2, 1);
+            return cb_ExpEq(attack, modmul, modadd, res, modlo, 2, 1);
         }
         else if (attackName == 'Axe: Amped Element Discharge' || attackName == 'Axe: Amped Element Discharge (Boost Mode)') {
-            return cb_ExpEq(attack, modifier, modmul, modadd, res, modhi, 3, 1);
+            return cb_ExpEq(attack, modmul, modadd, res, modhi, 3, 1);
         }
         else if (attackName == 'Axe: Super Amped Element Discharge') {
-            return cb_ExpEq(attack, modifier, modmul, modadd, res, modhi, 3, phialc);
+            return cb_ExpEq(attack, modmul, modadd, res, modhi, 3, phialc);
         }
         else {
             return 0;
         }
     };
 
-    var cb_ExpEq = function(attack, modifier, modmul, modadd, res, phialMulti, expCount, phialCount) {
-        return Math.floor(Math.floor(((attack / modifier) + (modadd / 10)) * (1 + modmul) * (res / 100)) * phialMulti) * expCount * phialCount;
+    var cb_ExpEq = function(attack, modmul, modadd, res, phialMulti, expCount, phialCount) {
+        return Math.floor(Math.floor((attack + (modadd / 10)) * (1 + modmul) * (res / 100)) * phialMulti) * expCount * phialCount;
     };
 
     var affinityBase = 0
@@ -1203,10 +1189,10 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     var sharpnessMod = [0.5, 0.75, 1.0, 1.05, 1.2, 1.32, 1.45];
     var sharpnessModE = [0.25, 0.5, 0.75, 1.0, 1.0625, 1.125, 1.2];
 
-    var pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, weaponType.modifier, sharpnessMod[sharpness], pMul, modifiers.pAdd);
+    var pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul, modifiers.pAdd);
     // special considerations: switch axes
     if (weaponType.id == 9) {
-        var pwrSACharge = pPwr(weapon.attack, affinityBase + modifiers.aff, weaponType.modifier, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd);
+        var pwrSACharge = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd);
     }
     var epwrs = [];
     var etype = [];
@@ -1229,24 +1215,16 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         }
     }
 
-    for (var i = 0; i < weapon.elements.length; i++) {
-        if (weapon.elements[i].id == 0) {
-            // skip elemental damage calculation if elemental damage type is None (for relic weapons)
-            continue;
-        }
-        if (weapon.elements[i].awakenRequired && modifiers.awk !== true) {
-            // skip elemental damage calculation if weapon requires awaken and, but awaken skill is not active
-            continue;
-        }
-        epwrs.push(ePwr(weapon.elements[i].attack, affinityBase + modifiers.aff, ecmod, sharpnessModE[sharpness]));
-        etype.push(weapon.elements[i]);
-    }
+    weapon.elements.map(element => {
+        epwrs.push(ePwr(element.attack, affinityBase + modifiers.aff, ecmod, sharpnessModE[sharpness]));
+        etype.push(element);
+    });
 
     var raw = [];
     var rawE = [];
-    for (i = 0; i < epwrs.length; i++) {
+    epwrs.map((epwr, i) => {
         rawE[i] = 0;
-    }
+    });
     for (var i = 0; i < motion.power.length; i++) {
         var rawPower = pwr;
 
@@ -1260,7 +1238,7 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
 
         // charge blade phial damage
         if (weaponType.id == 10 && weapon.phial == 'Impact') {
-            raw.push(cb_Exp(motion.name, weapon.attack, weaponType.modifier, 0, 0, 100, modifiers.phialc, weapon.phial));
+            raw.push(cb_Exp(motion.name, weapon.attack, 0, 0, 100, modifiers.phialc, weapon.phial));
         }
 
         if (epwrs.length > 0) {

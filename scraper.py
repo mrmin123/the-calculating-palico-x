@@ -159,7 +159,7 @@ def scrape_weapon(url):
                 "id": weaponIdTracker,
                 "name": row.contents[1].string.strip(),
                 "type": weaponType,
-                "attack": row.contents[3].string.strip(),
+                "attack": int(row.contents[3].string.strip()),
                 "elements": elements,
                 "affinity": affinity,
                 "sharpnesses": foundSharpnesses,
