@@ -1,5 +1,5 @@
 {
-	"1": {"id": 1, "name": "Great Sword", "modifier": 4.8,
+	"1": {"id": 1, "name": "Great Sword",
 		"motions": [
 			{"name": "Overhead Slash", "power": [48], "type": [0]},
 			{"name": "Rising Slash", "power": [42], "type": [0]},
@@ -26,7 +26,7 @@
 			{"name": "Bushido Dash Slash", "power": [50], "type": [0]}
 		]
 	},
-	"2": {"id": 2, "name": "Long Sword", "modifier": 3.3,
+	"2": {"id": 2, "name": "Long Sword",
 		"motions": [
 			{"name": "Step Slash", "power": [20], "type": [0]},
 			{"name": "Aerial Attack 1", "power": [23], "type": [0]},
@@ -50,7 +50,7 @@
 			{"name": "Spirit Roundslash", "power": [33], "type": [0]}
 		]
 	},
-	"3": {"id": 3, "name": "Sword and Shield", "modifier": 1.4,
+	"3": {"id": 3, "name": "Sword & Shield",
 		"motions": [
 			{"name": "Forward Slash", "power": [18], "type": [0]},
 			{"name": "Rising Slash", "power": [14], "type": [0]},
@@ -69,7 +69,7 @@
 			{"name": "Jumping Rising Slash", "power": [18], "type": [0]}
 		]
 	},
-	"4": {"id": 4, "name": "Dual Blades", "modifier": 1.4,
+	"4": {"id": 4, "name": "Dual Blades",
 		"motions": [
 			{"name": "Unsheathe Attack", "power": [7,7,7,7], "type": [0,0,0,0], "element": [0,1,0,1], "emod": [0.49,0.49,0.49,0.49]},
 			{"name": "Spinning Blade Dance", "power": [7,7,7,7,10,10], "type": [0,0,0,0,0,0], "element": [0,1,0,1,0,1], "emod": [1,1,1,1,0.49,0.49]},
@@ -91,7 +91,7 @@
 			{"name": "Blade Dance", "power": [29,4,4,4,4,4,4,4,4,6,18,18], "type": [0,0,0,0,0,0,0,0,0,0,0,0], "element": [0,0,1,0,1,0,1,0,1,0,0,1], "emod": [1,0.49,0.49,0.49,0.49,0.49,0.49,0.49,0.49,1,0.49,0.49]}
 		]
 	},
-	"5": {"id": 5, "name": "Hammer", "modifier": 5.2,
+	"5": {"id": 5, "name": "Hammer",
 		"motions": [
 			{"name": "Unsheathe Attack", "power": [20], "type": [1]},
 			{"name": "Ground Smash", "power": [42], "type": [1]},
@@ -112,7 +112,7 @@
 			{"name": "Aerial Attack (Charge Lv 3)", "power": [80], "type": [1]}
 		]
 	},
-	"6": {"id": 6, "name": "Hunting Horn", "modifier": 5.2,
+	"6": {"id": 6, "name": "Hunting Horn",
 		"motions": [
 			{"name": "Jumping Slam", "power": [36], "type": [1]},
 			{"name": "Slam (Right)", "power": [31], "type": [1]},
@@ -137,7 +137,7 @@
 			{"name": "Encore (Back, 3rd Note Above)", "power": [40], "type": [1]}
 		]
 	},
-	"7": {"id": 7, "name": "Lance", "modifier": 2.3,
+	"7": {"id": 7, "name": "Lance",
 		"motions": [
 			{"name": "Mid Thrust 1", "power": [27], "type": [0]},
 			{"name": "Mid Thrust 2", "power": [20], "type": [0]},
@@ -165,7 +165,7 @@
 			{"name": "Bushido Counter from just Guard", "power": [44,37], "type": [0,0]}
 		]
 	},
-	"8": {"id": 8, "name": "Gunlance", "modifier": 2.3,
+	"8": {"id": 8, "name": "Gunlance",
 		"motions": [
 			{"name": "Step Thrust", "power": [32], "type": [0]},
 			{"name": "Dash Thrust", "power": [30], "type": [0]},
@@ -178,7 +178,7 @@
 			{"name": "Jump Thrust", "power": [25], "type": [0]}
 		]
 	},
-	"9": {"id": 9, "name": "Switch Axe", "modifier": 5.4,
+	"9": {"id": 9, "name": "Switch Axe",
 		"motions": [
 			{"name": "Axe: Jump Slash", "power": [40], "type": [0]},
 			{"name": "Sword: Jump Morph Slash", "power": [43], "type": [0], "emod": [1.25]},
@@ -205,7 +205,7 @@
 			{"name": "Sword: Descending Aerial Slash", "power": [27], "type": [0], "emod": [1.25]}
 		]
 	},
-	"10": {"id": 10, "name": "Insect Glaive", "modifier": 3.1,
+	"10": {"id": 10, "name": "Insect Glaive",
 		"motions": [
 			{"name": "Thrust", "power": [15], "type": [0]},
 			{"name": "Reaping Slash", "power": [18,12], "type": [0,0]},
@@ -227,7 +227,7 @@
 			{"name": "Mark Target (Aim, Fire)", "power": [10], "type": [0]}
 		]
 	},
-	"11": {"id": 11, "name": "Charge Blade", "modifier": 3.6,
+	"11": {"id": 11, "name": "Charge Blade",
 		"motions": [
 			{"name": "Sword: Forward Slash", "power": [19], "type": [0]},
 			{"name": "Sword: Jump Slash (From Dash Slash)", "power": [35], "type": [0]},
