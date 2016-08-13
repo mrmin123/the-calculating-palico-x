@@ -160,7 +160,7 @@ class CalculatingPalicoXInterface extends React.Component {
             selectedMonsterBrokenParts: [],
             selectedModifiers: [],
             currModifierGroup: [],
-            sharpnessPlusOne: false,
+            sharpnessPlus: 0,
             setups: [],
             codes: []
         };
@@ -237,7 +237,7 @@ class CalculatingPalicoXInterface extends React.Component {
                 selectedWeaponType: null,
                 selectedWeapon: null,
                 selectedModifiers: [],
-                sharpnessPlusOne: false,
+                sharpnessPlus: 0,
                 setups: setups,
                 codes: codes
             });
@@ -262,7 +262,7 @@ class CalculatingPalicoXInterface extends React.Component {
                 selectedWeaponType: importedSetup[0],
                 selectedWeapon: importedSetup[1],
                 selectedModifiers: importedSetupModifiers,
-                sharpnessPlusOne: (importedSetupModifiers.indexOf(2) > -1 || importedSetupModifiers.indexOf(4) > -1 ? true : false),
+                sharpnessPlus: (importedSetupModifiers.indexOf(2) > -1 || importedSetupModifiers.indexOf(4) > -1 ? true : false),
                 setups: setups,
                 codes: codes
             });
@@ -289,7 +289,7 @@ class CalculatingPalicoXInterface extends React.Component {
             selectedWeaponType: retrievedSetup.selectedWeaponType,
             selectedWeapon: retrievedSetup.selectedWeapon,
             selectedModifiers: retrievedSetup.selectedModifiers,
-            sharpnessPlusOne: (retrievedSetup.selectedModifiers.indexOf(2) > -1 || retrievedSetup.selectedModifiers.indexOf(4) > -1 ? true : false)
+            sharpnessPlus: (retrievedSetup.selectedModifiers.indexOf(2) > -1 || retrievedSetup.selectedModifiers.indexOf(4) > -1 ? true : false)
         });
         scrollToTop();
     }
@@ -430,7 +430,7 @@ class CalculatingPalicoXInterface extends React.Component {
         this.updateSetup(this.state.selectedSetup, ['selectedModifiers'], [selectedModifiers]);
         this.setState({
             selectedModifiers: selectedModifiers,
-            sharpnessPlusOne: (selectedModifiers.indexOf(2) > -1 || selectedModifiers.indexOf(4) > -1 ? true : false)
+            sharpnessPlus: (selectedModifiers.indexOf(2) > -1 || selectedModifiers.indexOf(4) > -1 ? true : false)
         });
     }
 
@@ -460,7 +460,7 @@ class CalculatingPalicoXInterface extends React.Component {
             selectedMonsterState = this.state.selectedMonsterState,
             selectedModifiers = this.state.selectedModifiers,
             setups = this.state.setups;
-        var sharpnessPlusOne = this.state.sharpnessPlusOne,
+        var sharpnessPlus = this.state.sharpnessPlus,
             showAggregateDmg = this.state.showAggregateDmg;
         var currModifierGroup = this.state.currModifierGroup;
         return (
@@ -538,7 +538,7 @@ class CalculatingPalicoXInterface extends React.Component {
                                             <div className="row top-pad">
                                                 <div className="col-xs-6 col-sm-6 text-right">Sharpness</div>
                                                 <div className="col-xs-6 col-sm-6">
-                                                    <div id="sharpness-bar">
+                                                    <div className={"sharpness-bar" + (sharpnessPlus == 0 ? " active" : "")}>
                                                         <span style={{width: selectedWeaponData.sharpnesses[0][0]}} className="red"></span>
                                                         <span style={{width: selectedWeaponData.sharpnesses[0][1]}} className="orange"></span>
                                                         <span style={{width: selectedWeaponData.sharpnesses[0][2]}} className="yellow"></span>
@@ -547,7 +547,7 @@ class CalculatingPalicoXInterface extends React.Component {
                                                         <span style={{width: selectedWeaponData.sharpnesses[0][5]}} className="white"></span>
                                                         <span style={{width: selectedWeaponData.sharpnesses[0][6]}} className="purple"></span>
                                                     </div>
-                                                    <div id="sharpness-bar">
+                                                    <div className={"sharpness-bar" + (sharpnessPlus == 1 ? " active" : "")}>
                                                         <span style={{width: selectedWeaponData.sharpnesses[1][0]}} className="red"></span>
                                                         <span style={{width: selectedWeaponData.sharpnesses[1][1]}} className="orange"></span>
                                                         <span style={{width: selectedWeaponData.sharpnesses[1][2]}} className="yellow"></span>
@@ -556,7 +556,7 @@ class CalculatingPalicoXInterface extends React.Component {
                                                         <span style={{width: selectedWeaponData.sharpnesses[1][5]}} className="white"></span>
                                                         <span style={{width: selectedWeaponData.sharpnesses[1][6]}} className="purple"></span>
                                                     </div>
-                                                    <div id="sharpness-bar">
+                                                    <div className={"sharpness-bar" + (sharpnessPlus == 2 ? " active" : "")}>
                                                         <span style={{width: selectedWeaponData.sharpnesses[2][0]}} className="red"></span>
                                                         <span style={{width: selectedWeaponData.sharpnesses[2][1]}} className="orange"></span>
                                                         <span style={{width: selectedWeaponData.sharpnesses[2][2]}} className="yellow"></span>
