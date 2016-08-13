@@ -216,7 +216,7 @@ class CalculatingPalicoXInterface extends React.Component {
                 imported: false,
             };
         newSetup.calculatedModifiers = {
-            pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, awk: false, ec: false, sharpness: -1, lsspirit: 0, phialc: 1,
+            pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, cbo: false, ec: false, sharpness: -1, lsspirit: 0, phialc: 1,
             elem: [{eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}]
         };
         let setups = this.state.setups,
@@ -264,7 +264,7 @@ class CalculatingPalicoXInterface extends React.Component {
                 selectedWeaponType: importedSetup[0],
                 selectedWeapon: importedSetup[1],
                 selectedModifiers: importedSetupModifiers,
-                sharpnessPlus: (importedSetupModifiers.indexOf(2) > -1 || importedSetupModifiers.indexOf(4) > -1 ? true : false),
+                sharpnessPlus: (importedSetupModifiers.indexOf(3) > -1 || importedSetupModifiers.indexOf(2) > -1 ? (importedSetupModifiers.indexOf(2) > -1 ? 2 : 1) : 0),
                 setups: setups,
                 codes: codes
             });
@@ -291,7 +291,7 @@ class CalculatingPalicoXInterface extends React.Component {
             selectedWeaponType: retrievedSetup.selectedWeaponType,
             selectedWeapon: retrievedSetup.selectedWeapon,
             selectedModifiers: retrievedSetup.selectedModifiers,
-            sharpnessPlus: (retrievedSetup.selectedModifiers.indexOf(2) > -1 || retrievedSetup.selectedModifiers.indexOf(4) > -1 ? true : false)
+            sharpnessPlus: (retrievedSetup.selectedModifiers.indexOf(3) > -1 || retrievedSetup.selectedModifiers.indexOf(2) > -1 ? (retrievedSetup.selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0)
         });
         scrollToTop();
     }
@@ -425,8 +425,8 @@ class CalculatingPalicoXInterface extends React.Component {
     // method for handling any modifier checkbox selections
     //  modifier : id of modifier
     modifierSelection(modifier) {
-        let selectedModifiers = this.state.selectedModifiers.slice();
-        let SelectedModifiersPos = selectedModifiers.indexOf(modifier);
+        let selectedModifiers = this.state.selectedModifiers.slice(),
+            SelectedModifiersPos = selectedModifiers.indexOf(modifier);
         if (SelectedModifiersPos === -1) {
             // un-check other modifiers that exist in the same effect group
             this.props.modifiers[modifier].effectGroups.map(effectGroup => {
@@ -447,7 +447,7 @@ class CalculatingPalicoXInterface extends React.Component {
         this.updateSetup(this.state.selectedSetup, ['selectedModifiers'], [selectedModifiers]);
         this.setState({
             selectedModifiers: selectedModifiers,
-            sharpnessPlus: (selectedModifiers.indexOf(2) > -1 || selectedModifiers.indexOf(4) > -1 ? true : false)
+            sharpnessPlus: (selectedModifiers.indexOf(3) > -1 || selectedModifiers.indexOf(2) > -1 ? (selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0)
         });
     }
 
@@ -665,7 +665,9 @@ class CalculatingPalicoXInterface extends React.Component {
                                                                     return (
                                                                         <div className="row" key={k}>
                                                                             <div className="checkbox">
-                                                                                <label className={"col-xs-12 col-sm-12" + (currModifierGroup.indexOf(modifier) > -1 ? " modifiers-group" : "")} onMouseOver={() => this.modifierMouseOver(modifier)} onMouseLeave={this.modifierMouseLeave}>
+                                                                                <label className={"col-xs-12 col-sm-12" + (currModifierGroup.indexOf(modifier) > -1 ? " modifiers-group" : "")}
+                                                                                    onMouseOver={() => this.modifierMouseOver(modifier)} onMouseLeave={this.modifierMouseLeave}
+                                                                                    data-toggle="tooltip" data-placement="bottom" title="" data-original-title={modifiers[modifier].desc}>
                                                                                     <div className="col-xs-8 col-sm-8 modifiers-label text-right">{modifiers[modifier].name}</div>
                                                                                     <div className="col-xs-2 col-sm-2 modifiers-check">
                                                                                         <input type="checkbox" checked={selectedModifiers.indexOf(modifier) > -1 ? true : false} onChange={() => this.modifierSelection(modifier)} />
@@ -738,7 +740,8 @@ class SetupDamageTable extends React.Component {
             selectedMonsterBrokenParts: this.props.selectedMonsterBrokenParts,
             setup: this.props.setup,
             setupInfo: this.props.setupInfo,
-            sharpnessPlus: 0, //(this.props.setup.selectedModifiers.indexOf(2) > -1 || this.props.setup.selectedModifiers.indexOf(4) > -1 ? true : false),
+            sharpnessPlus: (this.props.setup.selectedModifiers.indexOf(3) > -1 || this.props.setup.selectedModifiers.indexOf(2) > -1 ?
+                (this.props.setup.selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0),
             selectedSharpness: this.props.setup.calculatedModifiers.sharpness,
             selectedSharpnessFlag: false,
             selectedSpirit: this.props.setup.calculatedModifiers.lsspirit,
@@ -786,14 +789,14 @@ class SetupDamageTable extends React.Component {
         let selectedSharpnessFlag = this.state.selectedSharpnessFlag;
         // set selectedSharpness selection based on selected weapon/relic and import flag
         let selectedSharpness,
-            sharpnessPlusOneActive = selectedModifiers.indexOf(2) > -1 && selectedModifiers.indexOf(4) > -1 ? true : false;
+            sharpnessPlus = (selectedModifiers.indexOf(3) > -1 || selectedModifiers.indexOf(2) > -1 ? (selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0);
         if (this.state.setup.imported) {
             // if importing a setup, set sharpness to whatever is in the setup
             selectedSharpness = this.state.setup.calculatedModifiers.sharpness;
         } else {
             // otherwise, always set sharpness to max possible
-            if (sharpnessPlusOneActive) {
-                selectedSharpness = sharpnesses[1].indexOf(0) > -1 ? sharpnesses[1].indexOf(0) - 1 : 5;
+            if (sharpnessPlus) {
+                selectedSharpness = sharpnesses[sharpnessPlus].indexOf(0) > -1 ? sharpnesses[sharpnessPlus].indexOf(0) - 1 : 5;
             } else {
                 selectedSharpness = sharpnesses[0].indexOf(0) > -1 ? sharpnesses[0].indexOf(0) - 1 : 5;
             }
@@ -813,7 +816,7 @@ class SetupDamageTable extends React.Component {
         var modData = null,
             selectedModifiers = setup.selectedModifiers,
             calculatedModifiers = {
-                pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, awk: false, ec: false,
+                pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, cbo: false, ec: false,
                 sharpness: this.state.selectedSharpness, lsspirit: this.state.selectedSpirit, phialc: this.state.selectedPhials,
                 elem: [{eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}, {eAdd: 0, eMul: 0}]
             };
@@ -835,25 +838,24 @@ class SetupDamageTable extends React.Component {
                 })
             }
             // set modifier flags for relevant modifiers
-            if (modData.effectGroups && modData.effectGroups.length > 0) {
-                if (modData.effectGroups.indexOf('groupVirus') > -1) {
-                    calculatedModifiers.vo = true;
-                }
-                if (modData.effectGroups.indexOf('groupWeakEx') > -1) {
-                    calculatedModifiers.wex = true;
-                }
-                if (modData.effectGroups.indexOf('groupAwaken') > -1) {
-                    calculatedModifiers.awk = true;
-                }
-                if (modData.effectGroups.indexOf('groupElemC') > -1) {
-                    calculatedModifiers.ec = true;
-                }
+            if (modifier == 1) {
+                // Virus Overcome active
+                calculatedModifiers.vo = true;
+            } else if (modifier == 4) {
+                // Weakness Exploit active
+                calculatedModifiers.wex = true;
+            } else if (modifier == 40) {
+                // Critical Boost active
+                calculatedModifiers.cbo = true;
+            } else if (modifier == 49) {
+                // Elemental Crit active
+                calculatedModifiers.ec = true;
             }
         });
         setup.calculatedModifiers = calculatedModifiers;
         this.setState({
             setup: setup,
-            sharpnessPlus: 0,
+            sharpnessPlus: (selectedModifiers.indexOf(3) > -1 || selectedModifiers.indexOf(2) > -1 ? (selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0),
             calculatedModifiers: calculatedModifiers
         }, () => {
             this.calculateTable();
@@ -1134,10 +1136,13 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     weapon.affinity = isNaN(weapon.affinity) || weapon.affinity === '' ? 0 : parseInt(weapon.affinity);
 
     // raw power calculation function
-    var pPwr = function(attack, affinity, sharpness, modmul, modadd) {
+    var pPwr = function(attack, affinity, sharpness, modmul, modadd, critboost) {
         // limit affinity to max 100%
         if (affinity > 100) { affinity = 100; }
-        return Math.floor(((attack + modadd) * (1 + 0.25 * (affinity/100))) * sharpness * (1 + modmul));
+        // set critical multiplier
+        critamt = 0.25
+        if (critboost) { critamt = 0.4; }
+        return Math.floor(((attack + modadd) * (1 + critamt * (affinity/100))) * sharpness * (1 + modmul));
     }
     // raw elemental power calculation function
     var ePwr = function(attack, affinity, ecmod, sharpness) {
@@ -1209,10 +1214,10 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     var sharpnessMod = [0.5, 0.75, 1.0, 1.05, 1.2, 1.32, 1.45];
     var sharpnessModE = [0.25, 0.5, 0.75, 1.0, 1.0625, 1.125, 1.2];
 
-    var pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul, modifiers.pAdd);
+    var pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul, modifiers.pAdd, modifiers.cbo);
     // special considerations: switch axes
     if (weaponType.id == 9) {
-        var pwrSACharge = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd);
+        var pwrSACharge = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd, modifiers.cbo);
     }
     var epwrs = [];
     var etype = [];
