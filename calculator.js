@@ -264,7 +264,7 @@ class CalculatingPalicoXInterface extends React.Component {
                 selectedWeaponType: importedSetup[0],
                 selectedWeapon: importedSetup[1],
                 selectedModifiers: importedSetupModifiers,
-                sharpnessPlus: (importedSetupModifiers.indexOf(2) > -1 || importedSetupModifiers.indexOf(4) > -1 ? true : false),
+                sharpnessPlus: (importedSetupModifiers.indexOf(3) > -1 || importedSetupModifiers.indexOf(2) > -1 ? (importedSetupModifiers.indexOf(2) > -1 ? 2 : 1) : 0),
                 setups: setups,
                 codes: codes
             });
@@ -291,7 +291,7 @@ class CalculatingPalicoXInterface extends React.Component {
             selectedWeaponType: retrievedSetup.selectedWeaponType,
             selectedWeapon: retrievedSetup.selectedWeapon,
             selectedModifiers: retrievedSetup.selectedModifiers,
-            sharpnessPlus: (retrievedSetup.selectedModifiers.indexOf(2) > -1 || retrievedSetup.selectedModifiers.indexOf(4) > -1 ? true : false)
+            sharpnessPlus: (retrievedSetup.selectedModifiers.indexOf(3) > -1 || retrievedSetup.selectedModifiers.indexOf(2) > -1 ? (retrievedSetup.selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0)
         });
         scrollToTop();
     }
@@ -425,8 +425,8 @@ class CalculatingPalicoXInterface extends React.Component {
     // method for handling any modifier checkbox selections
     //  modifier : id of modifier
     modifierSelection(modifier) {
-        let selectedModifiers = this.state.selectedModifiers.slice();
-        let SelectedModifiersPos = selectedModifiers.indexOf(modifier);
+        let selectedModifiers = this.state.selectedModifiers.slice(),
+            SelectedModifiersPos = selectedModifiers.indexOf(modifier);
         if (SelectedModifiersPos === -1) {
             // un-check other modifiers that exist in the same effect group
             this.props.modifiers[modifier].effectGroups.map(effectGroup => {
@@ -447,7 +447,7 @@ class CalculatingPalicoXInterface extends React.Component {
         this.updateSetup(this.state.selectedSetup, ['selectedModifiers'], [selectedModifiers]);
         this.setState({
             selectedModifiers: selectedModifiers,
-            sharpnessPlus: (selectedModifiers.indexOf(2) > -1 || selectedModifiers.indexOf(4) > -1 ? true : false)
+            sharpnessPlus: (selectedModifiers.indexOf(3) > -1 || selectedModifiers.indexOf(2) > -1 ? (selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0)
         });
     }
 
@@ -740,7 +740,8 @@ class SetupDamageTable extends React.Component {
             selectedMonsterBrokenParts: this.props.selectedMonsterBrokenParts,
             setup: this.props.setup,
             setupInfo: this.props.setupInfo,
-            sharpnessPlus: 0, //(this.props.setup.selectedModifiers.indexOf(2) > -1 || this.props.setup.selectedModifiers.indexOf(4) > -1 ? true : false),
+            sharpnessPlus: (this.props.setup.selectedModifiers.indexOf(3) > -1 || this.props.setup.selectedModifiers.indexOf(2) > -1 ?
+                (this.props.setup.selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0),
             selectedSharpness: this.props.setup.calculatedModifiers.sharpness,
             selectedSharpnessFlag: false,
             selectedSpirit: this.props.setup.calculatedModifiers.lsspirit,
@@ -788,14 +789,14 @@ class SetupDamageTable extends React.Component {
         let selectedSharpnessFlag = this.state.selectedSharpnessFlag;
         // set selectedSharpness selection based on selected weapon/relic and import flag
         let selectedSharpness,
-            sharpnessPlusOneActive = selectedModifiers.indexOf(2) > -1 && selectedModifiers.indexOf(4) > -1 ? true : false;
+            sharpnessPlus = (selectedModifiers.indexOf(3) > -1 || selectedModifiers.indexOf(2) > -1 ? (selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0);
         if (this.state.setup.imported) {
             // if importing a setup, set sharpness to whatever is in the setup
             selectedSharpness = this.state.setup.calculatedModifiers.sharpness;
         } else {
             // otherwise, always set sharpness to max possible
-            if (sharpnessPlusOneActive) {
-                selectedSharpness = sharpnesses[1].indexOf(0) > -1 ? sharpnesses[1].indexOf(0) - 1 : 5;
+            if (sharpnessPlus) {
+                selectedSharpness = sharpnesses[sharpnessPlus].indexOf(0) > -1 ? sharpnesses[sharpnessPlus].indexOf(0) - 1 : 5;
             } else {
                 selectedSharpness = sharpnesses[0].indexOf(0) > -1 ? sharpnesses[0].indexOf(0) - 1 : 5;
             }
@@ -854,7 +855,7 @@ class SetupDamageTable extends React.Component {
         setup.calculatedModifiers = calculatedModifiers;
         this.setState({
             setup: setup,
-            sharpnessPlus: 0,
+            sharpnessPlus: (selectedModifiers.indexOf(3) > -1 || selectedModifiers.indexOf(2) > -1 ? (selectedModifiers.indexOf(2) > -1 ? 2 : 1) : 0),
             calculatedModifiers: calculatedModifiers
         }, () => {
             this.calculateTable();
