@@ -775,14 +775,12 @@ class SetupDamageTable extends React.Component {
             selectedSharpness = this.state.setup.calculatedModifiers.sharpness;
         } else {
             // otherwise, always set sharpness to max possible
-            console.log('not imported');
             if (sharpnessPlusOneActive) {
-                selectedSharpness = sharpnesses[1].lastIndexOf(0) > -1 ? sharpnesses[1].lastIndexOf(0) - 1 : 5;
+                selectedSharpness = sharpnesses[1].indexOf(0) > -1 ? sharpnesses[1].indexOf(0) - 1 : 5;
             } else {
-                selectedSharpness = sharpnesses[0].lastIndexOf(0) > -1 ? sharpnesses[0].lastIndexOf(0) - 1 : 5;
+                selectedSharpness = sharpnesses[0].indexOf(0) > -1 ? sharpnesses[0].indexOf(0) - 1 : 5;
             }
         }
-        console.log(selectedSharpness);
         this.setState({
             selectedSharpness: selectedSharpness
         }, () => {
@@ -1128,7 +1126,7 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     var ePwr = function(attack, affinity, ecmod, sharpness) {
         // limit affinity to max 100%; mainly for elemental crit calculations
         if (affinity > 100) { affinity = 100; }
-        return Math.floor((attack / 10) * (1 + ecmod * (affinity/100)) * sharpness);
+        return Math.floor(attack * (1 + ecmod * (affinity/100)) * sharpness);
     }
     // true power calculation function
     var pDmg = function(pwr, motionPower, res) {
