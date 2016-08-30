@@ -82,6 +82,26 @@ html, body {
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
 
+/* Material-bootstrap tooltip */
+.popover,
+.tooltip-inner {
+	color: #fff;
+	line-height: 1em;
+	background: #000;
+	border: none;
+	border-radius: 2px;
+}
+.tooltip,
+.tooltip.in {
+	opacity: 1;
+}
+.popover .arrow,
+.tooltip .arrow,
+.popover .tooltip-arrow,
+.tooltip .tooltip-arrow {
+	display: block;
+}
+
 /*******************************/
 /* Calculating Palico X styles */
 /*******************************/

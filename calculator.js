@@ -1,7 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var Hashids = require("hashids");
-var $ = require("jquery");
 var url = require("url");
 
 // define globals
@@ -486,7 +485,7 @@ class CalculatingPalicoXInterface extends React.Component {
                     <div className="col-xs-12 col-sm-8">
                         <div className="panel panel-default">
                             <a href="#weapon" className="toggle-heading-button" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="weapon" onClick={() => this.handlePanelClick('weapon')}>
-                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="toggle weapon panel">
+                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="toggle weapon panel">
                                     Weapon <i className={"fa " + (this.state.iconWeaponPanel ? "fa-chevron-down" : "fa-chevron-up") + " float-right"}></i>
                                 </div>
                             </a>
@@ -593,7 +592,7 @@ class CalculatingPalicoXInterface extends React.Component {
                     <div className="col-xs-12 col-sm-4">
                         <div className="panel panel-default">
                             <a href="#monster" className="toggle-heading-button" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="monster" onClick={() => this.handlePanelClick('monster')}>
-                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="toggle meownster panel">
+                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="toggle meownster panel">
                                     Meownster <i className={"fa " + (this.state.iconMonsterPanel ? "fa-chevron-down" : "fa-chevron-up") + " float-right"}></i>
                                 </div>
                             </a>
@@ -645,7 +644,7 @@ class CalculatingPalicoXInterface extends React.Component {
                     <div className="col-xs-12 col-sm-12">
                         <div className="panel panel-default">
                             <a href="#modifiers" className="toggle-heading-button" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="modifiers" onClick={() => this.handlePanelClick('modifiers')}>
-                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="toggle meowdifiers panel">
+                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="toggle meowdifiers panel">
                                     Meowdifiers <i className={"fa " + (this.state.iconModifiersPanel ? "fa-chevron-down" : "fa-chevron-up") + " float-right"}></i>
                                 </div>
                             </a>
@@ -667,7 +666,7 @@ class CalculatingPalicoXInterface extends React.Component {
                                                                             <div className="checkbox">
                                                                                 <label className={"col-xs-12 col-sm-12" + (currModifierGroup.indexOf(modifier) > -1 ? " modifiers-group" : "")}
                                                                                     onMouseOver={() => this.modifierMouseOver(modifier)} onMouseLeave={this.modifierMouseLeave}
-                                                                                    data-toggle="tooltip" data-placement="bottom" title="" data-original-title={modifiers[modifier].desc}>
+                                                                                    data-toggle="tooltip" data-placement="bottom" title={modifiers[modifier].desc}>
                                                                                     <div className="col-xs-8 col-sm-8 modifiers-label text-right">{modifiers[modifier].name}</div>
                                                                                     <div className="col-xs-2 col-sm-2 modifiers-check">
                                                                                         <input type="checkbox" checked={selectedModifiers.indexOf(modifier) > -1 ? true : false} onChange={() => this.modifierSelection(modifier)} />
@@ -1099,7 +1098,7 @@ class SetupDamageTable extends React.Component {
                             {weaponTypes[selectedWeaponType].motions.map((motion, y) => {
                                 return (
                                     <tr key={y}>
-                                        <td><span className="dotted" data-toggle="tooltip" data-placement="bottom" title="" data-original-title={"motion values: [" + motion.power + "]"}>{motion.name}</span></td>
+                                        <td><span className="dotted" data-toggle="tooltip" data-placement="bottom" title={"[" + motion.power + "]"}>{motion.name}</span></td>
                                         {showAggregateDmg
                                             ? <td className="dmg-td"><span className="dmg">{tableValues[y + "y"].min.totalDamage}</span>{this.showElemDmg(showAggregateDmg, tableValues[y + "y"].min)} ~ <span className="dmg">{tableValues[y + "y"].max.totalDamage}</span>{this.showElemDmg(showAggregateDmg, tableValues[y + "y"].max)}</td>
                                             : <td className="dmg-td"><span className="dmg">{tableValues[y + "y"].min.physicalDamage}</span>{this.showElemDmg(showAggregateDmg, tableValues[y + "y"].min)} ~ <span className="dmg">{tableValues[y + "y"].max.physicalDamage}</span>{this.showElemDmg(showAggregateDmg, tableValues[y + "y"].max)}</td>
@@ -1142,13 +1141,13 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         // set critical multiplier
         critamt = 0.25
         if (critboost) { critamt = 0.4; }
-        return Math.floor(((attack + modadd) * (1 + critamt * (affinity/100))) * sharpness * (1 + modmul));
+        return ((attack + modadd) * (1 + critamt * (affinity/100))) * sharpness * (1 + modmul);
     }
     // raw elemental power calculation function
     var ePwr = function(attack, affinity, ecmod, sharpness) {
         // limit affinity to max 100%; mainly for elemental crit calculations
         if (affinity > 100) { affinity = 100; }
-        return Math.floor(attack * (1 + ecmod * (affinity/100)) * sharpness);
+        return attack * (1 + ecmod * (affinity/100)) * sharpness;
     }
     // true power calculation function
     var pDmg = function(pwr, motionPower, res) {
@@ -1166,7 +1165,17 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     // special considerations: long swords
     var pMul = modifiers.pMul;
     if (weaponType.id == 2) {
-        pMul += (0.1 * modifiers.lsspirit);
+        switch (modifiers.lsspirit) {
+            case 1:
+                pMul += 0.05;
+                break;
+            case 2:
+                pMul += 0.1;
+                break;
+            case 3:
+                pMul += 0.2;
+                break;
+        }
     }
 
     // special considerations: charge blades
