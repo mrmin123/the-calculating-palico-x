@@ -1,7 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var Hashids = require("hashids");
-var $ = require("jquery");
 var url = require("url");
 
 // define globals
