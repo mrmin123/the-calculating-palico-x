@@ -485,7 +485,7 @@ class CalculatingPalicoXInterface extends React.Component {
                     <div className="col-xs-12 col-sm-8">
                         <div className="panel panel-default">
                             <a href="#weapon" className="toggle-heading-button" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="weapon" onClick={() => this.handlePanelClick('weapon')}>
-                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="toggle weapon panel">
+                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="toggle weapon panel">
                                     Weapon <i className={"fa " + (this.state.iconWeaponPanel ? "fa-chevron-down" : "fa-chevron-up") + " float-right"}></i>
                                 </div>
                             </a>
@@ -592,7 +592,7 @@ class CalculatingPalicoXInterface extends React.Component {
                     <div className="col-xs-12 col-sm-4">
                         <div className="panel panel-default">
                             <a href="#monster" className="toggle-heading-button" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="monster" onClick={() => this.handlePanelClick('monster')}>
-                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="toggle meownster panel">
+                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="toggle meownster panel">
                                     Meownster <i className={"fa " + (this.state.iconMonsterPanel ? "fa-chevron-down" : "fa-chevron-up") + " float-right"}></i>
                                 </div>
                             </a>
@@ -644,7 +644,7 @@ class CalculatingPalicoXInterface extends React.Component {
                     <div className="col-xs-12 col-sm-12">
                         <div className="panel panel-default">
                             <a href="#modifiers" className="toggle-heading-button" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="modifiers" onClick={() => this.handlePanelClick('modifiers')}>
-                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="toggle meowdifiers panel">
+                                <div className="panel-heading toggle-heading-div" data-toggle="tooltip" data-placement="bottom" title="toggle meowdifiers panel">
                                     Meowdifiers <i className={"fa " + (this.state.iconModifiersPanel ? "fa-chevron-down" : "fa-chevron-up") + " float-right"}></i>
                                 </div>
                             </a>
@@ -666,7 +666,7 @@ class CalculatingPalicoXInterface extends React.Component {
                                                                             <div className="checkbox">
                                                                                 <label className={"col-xs-12 col-sm-12" + (currModifierGroup.indexOf(modifier) > -1 ? " modifiers-group" : "")}
                                                                                     onMouseOver={() => this.modifierMouseOver(modifier)} onMouseLeave={this.modifierMouseLeave}
-                                                                                    data-toggle="tooltip" data-placement="bottom" title="" data-original-title={modifiers[modifier].desc}>
+                                                                                    data-toggle="tooltip" data-placement="bottom" title={modifiers[modifier].desc}>
                                                                                     <div className="col-xs-8 col-sm-8 modifiers-label text-right">{modifiers[modifier].name}</div>
                                                                                     <div className="col-xs-2 col-sm-2 modifiers-check">
                                                                                         <input type="checkbox" checked={selectedModifiers.indexOf(modifier) > -1 ? true : false} onChange={() => this.modifierSelection(modifier)} />
