@@ -1142,13 +1142,13 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         // set critical multiplier
         critamt = 0.25
         if (critboost) { critamt = 0.4; }
-        return Math.floor(((attack + modadd) * (1 + critamt * (affinity/100))) * sharpness * (1 + modmul));
+        return ((attack + modadd) * (1 + critamt * (affinity/100))) * sharpness * (1 + modmul);
     }
     // raw elemental power calculation function
     var ePwr = function(attack, affinity, ecmod, sharpness) {
         // limit affinity to max 100%; mainly for elemental crit calculations
         if (affinity > 100) { affinity = 100; }
-        return Math.floor(attack * (1 + ecmod * (affinity/100)) * sharpness);
+        return attack * (1 + ecmod * (affinity/100)) * sharpness;
     }
     // true power calculation function
     var pDmg = function(pwr, motionPower, res) {
