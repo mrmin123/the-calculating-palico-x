@@ -1166,7 +1166,17 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     // special considerations: long swords
     var pMul = modifiers.pMul;
     if (weaponType.id == 2) {
-        pMul += (0.1 * modifiers.lsspirit);
+        switch (modifiers.lsspirit) {
+            case 1:
+                pMul += 0.05;
+                break;
+            case 2:
+                pMul += 0.1;
+                break;
+            case 3:
+                pMul += 0.2;
+                break;
+        }
     }
 
     // special considerations: charge blades
