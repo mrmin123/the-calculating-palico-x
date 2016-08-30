@@ -1098,7 +1098,7 @@ class SetupDamageTable extends React.Component {
                             {weaponTypes[selectedWeaponType].motions.map((motion, y) => {
                                 return (
                                     <tr key={y}>
-                                        <td><span className="dotted" data-toggle="tooltip" data-placement="bottom" title="" data-original-title={"motion values: [" + motion.power + "]"}>{motion.name}</span></td>
+                                        <td><span className="dotted" data-toggle="tooltip" data-placement="bottom" title={"[" + motion.power + "]"}>{motion.name}</span></td>
                                         {showAggregateDmg
                                             ? <td className="dmg-td"><span className="dmg">{tableValues[y + "y"].min.totalDamage}</span>{this.showElemDmg(showAggregateDmg, tableValues[y + "y"].min)} ~ <span className="dmg">{tableValues[y + "y"].max.totalDamage}</span>{this.showElemDmg(showAggregateDmg, tableValues[y + "y"].max)}</td>
                                             : <td className="dmg-td"><span className="dmg">{tableValues[y + "y"].min.physicalDamage}</span>{this.showElemDmg(showAggregateDmg, tableValues[y + "y"].min)} ~ <span className="dmg">{tableValues[y + "y"].max.physicalDamage}</span>{this.showElemDmg(showAggregateDmg, tableValues[y + "y"].max)}</td>
