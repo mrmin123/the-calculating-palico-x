@@ -490,8 +490,8 @@ class CalculatingPalicoXInterface extends React.Component {
                 <div className="row">
                     <div className="col-xs-12 col-sm-8">
                         <div className="panel panel-default">
-                            <a href="#weapon" className="toggle-heading-button css-tooltip" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="weapon" onClick={() => this.handlePanelClick('weapon')}>
-                                <div className="panel-heading toggle-heading-div" data-tooltip="toggle weapon panel">
+                            <a href="#weapon" className="toggle-heading-button css-tooltip css-tooltip-togglebar" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="weapon" onClick={() => this.handlePanelClick('weapon')} data-tooltip="toggle weapon panel">
+                                <div className="panel-heading toggle-heading-div">
                                     Weapon <i className={"fa " + (this.state.iconWeaponPanel ? "fa-chevron-down" : "fa-chevron-up") + " float-right"}></i>
                                 </div>
                             </a>
@@ -599,8 +599,8 @@ class CalculatingPalicoXInterface extends React.Component {
                     </div>
                     <div className="col-xs-12 col-sm-4">
                         <div className="panel panel-default">
-                            <a href="#monster" className="toggle-heading-button css-tooltip" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="monster" onClick={() => this.handlePanelClick('monster')}>
-                                <div className="panel-heading toggle-heading-div" data-tooltip="toggle meownster panel">
+                            <a href="#monster" className="toggle-heading-button css-tooltip css-tooltip-togglebar" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="monster" onClick={() => this.handlePanelClick('monster')} data-tooltip="toggle meownster panel">
+                                <div className="panel-heading toggle-heading-div">
                                     Meownster <i className={"fa " + (this.state.iconMonsterPanel ? "fa-chevron-down" : "fa-chevron-up") + " float-right"}></i>
                                 </div>
                             </a>
@@ -653,8 +653,8 @@ class CalculatingPalicoXInterface extends React.Component {
                 <div className="row">
                     <div className="col-xs-12 col-sm-12">
                         <div className="panel panel-default">
-                            <a href="#modifiers" className="toggle-heading-button css-tooltip" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="modifiers" onClick={() => this.handlePanelClick('modifiers')}>
-                                <div className="panel-heading toggle-heading-div" data-tooltip="toggle meowdifiers panel">
+                            <a href="#modifiers" className="toggle-heading-button css-tooltip css-tooltip-togglebar" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="modifiers" onClick={() => this.handlePanelClick('modifiers')} data-tooltip="toggle meowdifiers panel">
+                                <div className="panel-heading toggle-heading-div">
                                     Meowdifiers <i className={"fa " + (this.state.iconModifiersPanel ? "fa-chevron-down" : "fa-chevron-up") + " float-right"}></i>
                                 </div>
                             </a>

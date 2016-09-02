@@ -131,34 +131,47 @@ strong {
 .css-tooltip:hover {
 	display: inline;
 	position: relative;
+
+	&:before {
+		content: "";
+		position: absolute;
+		top: 20px;
+		left: 20px;
+		border: solid;
+		border-color: #000 transparent;
+		border-width: 0 6px 6px 6px;
+		z-index: 999;
+	}
+
+	&:after {
+		content: attr(data-tooltip);
+		max-width: 180px;
+		position: absolute;
+		top: 25px;
+		left: 15px;
+		padding: 4px 8px;
+		font-size: 0.7rem;
+		color: #fff;
+		text-align: center;
+		background-color: #000;
+		z-index: 999;
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+	}
 }
 
-.css-tooltip:hover:before{
-	content: "";
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	border: solid;
-	border-color: #000 transparent;
-	border-width: 0 6px 6px 6px;
-	z-index: 999;
-}
+.css-tooltip-togglebar:hover {
+	&:before {
+		top: 50px;
+		left: 20px;
+	}
 
-.css-tooltip:hover:after {
-	content: attr(data-tooltip);
-	max-width: 180px;
-	position: absolute;
-	top: 25px;
-	left: 15px;
-	padding: 4px 8px;
-	font-size: 0.7rem;
-	color: #fff;
-	text-align: center;
-	background-color: #000;
-	z-index: 999;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
+	&:after {
+		width: 150px;
+		top: 55px;
+		left: 10px;
+	}
 }
 
 /* Weapon panel */
