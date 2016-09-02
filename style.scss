@@ -139,7 +139,7 @@ html, body {
 
 /* Monster panel */
 .weakness-summary {
-	font-weight: bold;
+	font-weight: 500;
 }
 
 .weakness-summary div.row:first-child {
@@ -280,13 +280,13 @@ html, body {
 		}
 
 		.dmg {
-			font-weight: bold;
+			font-weight: 500;
 			vertical-align: middle;
 		}
 
 		.element-dmg {
 			font-size: 0.6rem;
-			font-weight: bold;
+			font-weight: 500;
 			vertical-align: middle;
 
 			i {
@@ -424,4 +424,15 @@ html, body {
 
 .heat6 {
 	background-color: #ffeeee;
+}
+
+/* Footer */
+.footer {
+	margin-bottom: 50px;
+	font-size: 0.7rem;
+	text-align: center;
+
+	a {
+		font-weight: 500;
+	}
 }

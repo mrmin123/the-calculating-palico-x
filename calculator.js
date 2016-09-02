@@ -137,6 +137,12 @@ class CalculatingPalicoX extends React.Component {
                         importedSetups={this.state.importedSetups}
                     />
                 : null}
+                <div className="footer">
+                    Send feedback, suggestions, corrections via&nbsp;
+                    <a href="http://github.com/mrmin123/the-calculating-palico-x">Github</a> //&nbsp;
+                    <a href="https://www.reddit.com/message/compose?to=mrmin123&subject=calculatingpalicox">Reddit</a> //&nbsp;
+                    <a href="https://twitter.com/mrmin123">Twitter</a>
+                </div>
             </div>
         );
     }
