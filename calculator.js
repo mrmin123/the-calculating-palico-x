@@ -514,7 +514,9 @@ class CalculatingPalicoXInterface extends React.Component {
                                                         <option value="" disabled={true}>-- Select Weapon --</option>
                                                     : null}
                                                     {selectedWeaponType ?
-                                                        weaponList[selectedWeaponType].map(weapon => {
+                                                        weaponList[selectedWeaponType].sort((a, b) => {
+                                                            return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+                                                        }).map(weapon => {
                                                             return (<option key={weapon.id} value={weapon.id}>{weapon.name}</option>);
                                                         })
                                                     : null}
@@ -605,7 +607,9 @@ class CalculatingPalicoXInterface extends React.Component {
                                                     <select className="form-control" value={selectedMonster ? selectedMonster : ""} onChange={this.handleMonsterSelection}>
                                                         <option value="" disabled={true}>-- Select Target Meownster --</option>
                                                         {monsterList ?
-                                                            monsterList.map(monster => {
+                                                            monsterList.sort((a, b) => {
+                                                                return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+                                                            }).map(monster => {
                                                                 return (<option key={monster.id} value={monster.id}>{monster.name}</option>);
                                                             })
                                                         : null}
