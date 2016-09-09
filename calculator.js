@@ -846,18 +846,40 @@ class SetupDamageTable extends React.Component {
                 })
             }
             // set modifier flags for relevant modifiers
-            if (modifier == 1) {
-                // Virus Overcome active
-                calculatedModifiers.vo = true;
-            } else if (modifier == 4) {
-                // Weakness Exploit active
-                calculatedModifiers.wex = true;
-            } else if (modifier == 40) {
-                // Critical Boost active
-                calculatedModifiers.cbo = true;
-            } else if (modifier == 49) {
-                // Elemental Crit active
-                calculatedModifiers.ec = true;
+            switch(modifier) {
+                case 1:
+                    // Virus Overcome active
+                    calculatedModifiers.vo = true;
+                    break;
+                case 4:
+                    // Weakness Exploit active
+                    calculatedModifiers.wex = true;
+                    break;
+                case 40:
+                    // Critical Boost active
+                    calculatedModifiers.cbo = true;
+                    break;
+                case 49:
+                    // Elemental Crit active
+                    calculatedModifiers.ec = true;
+                    break;
+                case 75:
+                    // Bludgeoner active
+                    switch (this.state.selectedSharpness) {
+                        case 3:
+                            calculatedModifiers.pAdd += 15;
+                            break;
+                        case 2:
+                            calculatedModifiers.pAdd += 25;
+                            break;
+                        case 1:
+                            calculatedModifiers.pAdd += 30;
+                            break;
+                        case 0:
+                            calculatedModifiers.pAdd += 30;
+                            break;
+                    }
+                    break;
             }
         });
         setup.calculatedModifiers = calculatedModifiers;
@@ -972,7 +994,7 @@ class SetupDamageTable extends React.Component {
             selectedSharpness: parseInt(ref.target.value),
             selectedSharpnessFlag: true
         }, () => {
-            this.calculateTable();
+            this.calculateModifiers();
         });
     }
 
