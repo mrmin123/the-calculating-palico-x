@@ -1166,11 +1166,13 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     weapon.affinity = isNaN(weapon.affinity) || weapon.affinity === '' ? 0 : parseInt(weapon.affinity);
 
     // raw power calculation function
-    let pPwr = function(attack, affinity, sharpness, modmul, modadd, critboost) {
+    let pPwr = function(attack, affinity, sharpness, modmul, modadd, critboost, res) {
+        // modify resistance as needed if Weakness Exploit skill is active
+        if (modifiers.wex === true && res > 44) { affinity += 50; }
         // limit affinity to max 100%
         if (affinity > 100) { affinity = 100; }
         // set critical multiplier
-        critamt = 0.25
+        let critamt = 0.25
         if (critboost) { critamt = 0.4; }
         return ((attack + modadd) * (1 + critamt * (affinity/100))) * sharpness * (1 + modmul);
     }
@@ -1181,9 +1183,16 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         return attack * (1 + ecmod * (affinity/100)) * sharpness;
     }
     // true power calculation function
-    let pDmg = function(pwr, motionPower, res) {
-        // modify resistance as needed if Weakness Exploit skill is active
-        if (modifiers.wex === true && res > 44) { res += 5; }
+    let pDmg = function(motionPower, res, motion) {
+        let pwr = 0;
+        // calculate power here to account for part resistance
+        if (weaponType.id == 9 && weapon.phial == 'Power' && motion.indexOf('Sword:') > -1) {
+            // special consideration for switch axes
+            pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd, modifiers.cbo, res);
+        } else {
+            pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul, modifiers.pAdd, modifiers.cbo, res);
+        }
+
         return Math.floor(pwr * (motionPower / 100) * (res / 100));
     }
     // true elemental power calculation function
@@ -1254,11 +1263,6 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     let sharpnessMod = [0.5, 0.75, 1.0, 1.05, 1.2, 1.32, 1.45];
     let sharpnessModE = [0.25, 0.5, 0.75, 1.0, 1.0625, 1.125, 1.2];
 
-    let pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul, modifiers.pAdd, modifiers.cbo);
-    // special considerations: switch axes
-    if (weaponType.id == 9) {
-        let pwrSACharge = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd, modifiers.cbo);
-    }
     let epwrs = [];
     let etype = [];
     let ecmod = 0;
@@ -1291,15 +1295,8 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         rawE[i] = 0;
     });
     for (let i = 0; i < motion.power.length; i++) {
-        let rawPower = pwr;
-
-        // switch axe charge damage
-        if (weaponType.id == 9 && weapon.phial == 'Power' && motion.name.indexOf('Sword:') > -1) {
-            rawPower = pwrSACharge;
-        }
-
         // raw damage
-        raw.push(pDmg(rawPower, motion.power[i], damage[motion.type[i]]));
+        raw.push(pDmg(motion.power[i], damage[motion.type[i]], motion.name));
 
         // charge blade phial damage
         if (weaponType.id == 10 && weapon.phial == 'Impact') {
