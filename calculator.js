@@ -674,7 +674,7 @@ class CalculatingPalicoXInterface extends React.Component {
                                                                     return (
                                                                         <div className="row" key={k}>
                                                                             <div className="checkbox">
-                                                                                <label className={"col-xs-12 col-sm-12 css-tooltip" + (currModifierGroup.indexOf(modifier) > -1 ? " modifiers-group" : "")}
+                                                                                <label className={"col-xs-12 col-sm-12 css-tooltip css-tooltip-modifier" + (currModifierGroup.indexOf(modifier) > -1 ? " modifiers-group" : "")}
                                                                                     onMouseOver={() => this.modifierMouseOver(modifier)} onMouseLeave={this.modifierMouseLeave} data-tooltip={modifiers[modifier].desc}>
                                                                                     <div className="col-xs-8 col-sm-8 modifiers-label text-right">{modifiers[modifier].name}</div>
                                                                                     <div className="col-xs-2 col-sm-2 modifiers-check">
