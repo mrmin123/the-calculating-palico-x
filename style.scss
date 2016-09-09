@@ -86,26 +86,6 @@ strong {
 .material-icons.md-36 { font-size: 36px; }
 .material-icons.md-48 { font-size: 48px; }
 
-/* Material-bootstrap tooltip */
-.popover,
-.tooltip-inner {
-	color: #fff;
-	line-height: 1em;
-	background: #000;
-	border: none;
-	border-radius: 2px;
-}
-.tooltip,
-.tooltip.in {
-	opacity: 1;
-}
-.popover .arrow,
-.tooltip .arrow,
-.popover .tooltip-arrow,
-.tooltip .tooltip-arrow {
-	display: block;
-}
-
 /*******************************/
 /* Calculating Palico X styles */
 /*******************************/
@@ -145,7 +125,6 @@ strong {
 
 	&:after {
 		content: attr(data-tooltip);
-		max-width: 180px;
 		position: absolute;
 		top: 25px;
 		left: 15px;
@@ -168,9 +147,15 @@ strong {
 	}
 
 	&:after {
-		width: 150px;
 		top: 55px;
+		width: 150px;
 		left: 10px;
+	}
+}
+
+.css-tooltip-modifier:hover {
+	&:after {
+		max-width: 170px;
 	}
 }
 

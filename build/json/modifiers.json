@@ -2,7 +2,7 @@
 	"1": {"name": "Virus Overcome", "effectGroups": [], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase affinity"},
 	"2": {"name": "Sharpness +2/Hellblade Soul", "effectGroups": ["groupSharpness"], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase weapon sharpness level"},
 	"3": {"name": "Sharpness +1", "effectGroups": ["groupSharpness"], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "slightly increase weapon sharpness level"},
-	"4": {"name": "Weakness Exploit +1","effectGroups": [], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase damage +5% on monster weak points"},
+	"4": {"name": "Weakness Exploit +1","effectGroups": [], "dAdd": 0, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase affinity +50% on monster weak points"},
 	"5": {"name": "Powercharm", "effectGroups": [], "dAdd": 6, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase attack +6"},
 	"6": {"name": "Powertalon", "effectGroups": [], "dAdd": 9, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase attack +9"},
 	"7": {"name": "Demondrug", "effectGroups": ["groupC-A"], "dAdd": 5, "dMul": 0, "eAdd": 0, "eMul": 0, "eType": -1, "aff": 0, "desc": "increase attack +5 until death"},
