@@ -1,18 +1,18 @@
-var React = require("react");
-var ReactDOM = require("react-dom");
-var Hashids = require("hashids");
-var url = require("url");
+let React = require("react");
+let ReactDOM = require("react-dom");
+let Hashids = require("hashids");
+let url = require("url");
 
 // define globals
-var weaponTypeList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-var sharpnesses = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'White', 'Purple'];
-var elementalTypes = ['None', 'Fire', 'Water', 'Ice', 'Thunder', 'Dragon', 'Poison', 'Sleep', 'Para', 'Blast'];
-var saxePhials = ['Power', 'Element'];
-var cbladePhials = ['Impact', 'Element'];
-var monsterWeaknessCategories = ['Cut', 'Impact', 'Shot', 'Fire', 'Water', 'Ice', 'Thunder', 'Dragon'];
-var lsSpiritOptions = ['None', 'White', 'Yellow', 'Red'];
-var cbPhialOptions = [1, 2, 3, 4, 5, 6];
-var hashids = new Hashids('calculating');
+const weaponTypeList = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const sharpnesses = ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'White', 'Purple'];
+const elementalTypes = ['None', 'Fire', 'Water', 'Ice', 'Thunder', 'Dragon', 'Poison', 'Sleep', 'Para', 'Blast'];
+const saxePhials = ['Power', 'Element'];
+const cbladePhials = ['Impact', 'Element'];
+const monsterWeaknessCategories = ['Cut', 'Impact', 'Shot', 'Fire', 'Water', 'Ice', 'Thunder', 'Dragon'];
+const lsSpiritOptions = ['None', 'White', 'Yellow', 'Red'];
+const cbPhialOptions = [1, 2, 3, 4, 5, 6];
+let hashids = new Hashids('calculating');
 
 class CalculatingPalicoX extends React.Component {
     constructor(props) {
@@ -61,7 +61,7 @@ class CalculatingPalicoX extends React.Component {
         // load setups from url if applicable
         let tempHref = window.location.href && url.parse(window.location.href, true);
         if (tempHref.search.length > 0) {
-            var importedSetups = {};
+            let importedSetups = {};
             // verify that input is ok
             if (tempHref.query.m && tempHref.query.s) {
                 importedSetups.m = parseInt(tempHref.query.m);
@@ -82,9 +82,9 @@ class CalculatingPalicoX extends React.Component {
     // build the modifierGroups object, which is a dictionary of keys of effectGroups
     // with an array of modifier ids associated with said group as their values
     parseModifierGroups() {
-        var modifiers = this.state.modifiers;
-        var modifierGroups = {};
-        for (var modifier in modifiers) {
+        let modifiers = this.state.modifiers;
+        let modifierGroups = {};
+        for (let modifier in modifiers) {
             if (modifiers.hasOwnProperty(modifier)) {
                 modifiers[modifier].effectGroups.map(effectGroup => {
                     if (effectGroup in modifierGroups) {
@@ -306,7 +306,7 @@ class CalculatingPalicoXInterface extends React.Component {
     //  field         : name of field in setup object to be updated, in an array
     //  value         : value to update the setup object with, in an array
     updateSetup(selectedSetup, fields, values) {
-        var tempSetups = this.state.setups;
+        let tempSetups = this.state.setups;
         fields.map((field, i) => {
             if (field == 'selectedWeaponData') {
                 // deep copy selectedWeaponData from this.props.weaponData, otherwise editing relic values will
@@ -326,7 +326,7 @@ class CalculatingPalicoXInterface extends React.Component {
 
     // method for calculating the monster weakness averages after a monster is selected
     calcMonsterWeaknessAverages() {
-        var monsterWeaknesses = [0, 0, 0, 0, 0, 0, 0, 0],
+        let monsterWeaknesses = [0, 0, 0, 0, 0, 0, 0, 0],
             count = 0;
         // add up damages per damage type for the monster and its monster state, while counting how many locations have been added
         this.state.selectedMonsterData['damage' + this.state.selectedMonsterState].map((monsterWeakness, i) => {
@@ -415,7 +415,7 @@ class CalculatingPalicoXInterface extends React.Component {
     // method for setting the currModifierGroup array based on mouse hover over modifier. Modifiers
     // in the currModifierGroup array are highlighted in gray in the modifiers list
     modifierMouseOver(modifier) {
-        var currModifierGroup = [];
+        let currModifierGroup = [];
         this.props.modifiers[modifier].effectGroups.map(effectGroup => {
             currModifierGroup = currModifierGroup.concat(this.props.modifierGroups[effectGroup]);
         });
@@ -467,14 +467,14 @@ class CalculatingPalicoXInterface extends React.Component {
     }
 
     render() {
-        var weaponTypes = this.props.weaponTypes,
+        let weaponTypes = this.props.weaponTypes,
             weaponList = this.props.weaponList,
             weaponData = this.props.weaponData,
             monsterList = this.props.monsterList,
             monsterData = this.props.monsterData,
             modifiers = this.props.modifiers,
             modifierDisplayGroups = this.props.modifierDisplayGroups;
-        var selectedWeaponType = this.state.selectedWeaponType,
+        let selectedWeaponType = this.state.selectedWeaponType,
             selectedWeapon = this.state.selectedWeapon,
             selectedWeaponData = this.state.setups[this.state.selectedSetup] && this.state.setups[this.state.selectedSetup].selectedWeaponData ? this.state.setups[this.state.selectedSetup].selectedWeaponData : null,
             selectedMonster = this.state.selectedMonster,
@@ -482,9 +482,9 @@ class CalculatingPalicoXInterface extends React.Component {
             selectedMonsterState = this.state.selectedMonsterState,
             selectedModifiers = this.state.selectedModifiers,
             setups = this.state.setups;
-        var sharpnessPlus = this.state.sharpnessPlus,
+        let sharpnessPlus = this.state.sharpnessPlus,
             showAggregateDmg = this.state.showAggregateDmg;
-        var currModifierGroup = this.state.currModifierGroup;
+        let currModifierGroup = this.state.currModifierGroup;
         return (
             <div className="container">
                 <div className="row">
@@ -820,8 +820,8 @@ class SetupDamageTable extends React.Component {
     // which contains the multipliers and modifiers used by calculateDamage(). calls calculateTable()
     // once the calculateModifiers state is updated
     calculateModifiers() {
-        var setup = this.state.setup;
-        var modData = null,
+        let setup = this.state.setup;
+        let modData = null,
             selectedModifiers = setup.selectedModifiers,
             calculatedModifiers = {
                 pAdd: 0, pMul: 0, aff: 0, vo: false, wex: false, cbo: false, ec: false,
@@ -896,8 +896,8 @@ class SetupDamageTable extends React.Component {
     // also uses setMinMax() method to generate values for the range cells. calls generateCode() to
     // automatically update the hashId code for the setup
     calculateTable() {
-        var weaponTypes = this.props.weaponTypes;
-        var tempCalc = null,
+        let weaponTypes = this.props.weaponTypes;
+        let tempCalc = null,
             tableValues = {};
         weaponTypes[this.state.setup.selectedWeaponType].motions.map((motion, y) => {
             this.state.selectedMonsterData['damage' + this.state.selectedMonsterState].map((monsterWeakness, x) => {
@@ -1023,9 +1023,9 @@ class SetupDamageTable extends React.Component {
     }
 
     render() {
-        var weaponTypes = this.props.weaponTypes,
+        let weaponTypes = this.props.weaponTypes,
             modifiers = this.props.modifiers;
-        var selectedWeaponType = this.state.setup.selectedWeaponType,
+        let selectedWeaponType = this.state.setup.selectedWeaponType,
             selectedWeapon = this.state.setup.selectedWeapon,
             selectedWeaponData = this.state.setup.selectedWeaponData,
             selectedMonsterData = this.state.selectedMonsterData,
@@ -1035,9 +1035,9 @@ class SetupDamageTable extends React.Component {
             selectedSpirit = this.state.selectedSpirit,
             selectedPhials = this.state.selectedPhials,
             setupInfo = this.state.setupInfo;
-        var sharpnessPlus = this.state.sharpnessPlus,
+        let sharpnessPlus = this.state.sharpnessPlus,
             showAggregateDmg = this.state.showAggregateDmg;
-        var tableValues = this.state.tableValues;
+        let tableValues = this.state.tableValues;
         return (
             <div className={"row" + (setupInfo.key > 0 ? " dmg-body-top-pad" : "")}>
                 <div className="col-xs-12 col-sm-12">
@@ -1166,7 +1166,7 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     weapon.affinity = isNaN(weapon.affinity) || weapon.affinity === '' ? 0 : parseInt(weapon.affinity);
 
     // raw power calculation function
-    var pPwr = function(attack, affinity, sharpness, modmul, modadd, critboost) {
+    let pPwr = function(attack, affinity, sharpness, modmul, modadd, critboost) {
         // limit affinity to max 100%
         if (affinity > 100) { affinity = 100; }
         // set critical multiplier
@@ -1175,26 +1175,26 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         return ((attack + modadd) * (1 + critamt * (affinity/100))) * sharpness * (1 + modmul);
     }
     // raw elemental power calculation function
-    var ePwr = function(attack, affinity, ecmod, sharpness) {
+    let ePwr = function(attack, affinity, ecmod, sharpness) {
         // limit affinity to max 100%; mainly for elemental crit calculations
         if (affinity > 100) { affinity = 100; }
         return attack * (1 + ecmod * (affinity/100)) * sharpness;
     }
     // true power calculation function
-    var pDmg = function(pwr, motionPower, res) {
+    let pDmg = function(pwr, motionPower, res) {
         // modify resistance as needed if Weakness Exploit skill is active
         if (modifiers.wex === true && res > 44) { res += 5; }
         return Math.floor(pwr * (motionPower / 100) * (res / 100));
     }
     // true elemental power calculation function
-    var eDmg = function(pwr, res, modmul, modadd, emod) {
+    let eDmg = function(pwr, res, modmul, modadd, emod) {
         // limit elemental damage modifier to max 1.2x
         if (modmul > 0.2) { modmul = 0.2; }
         return Math.floor((pwr * (1 + modmul) + (modadd / 10)) * (res / 100) * emod);
     }
 
     // special considerations: long swords
-    var pMul = modifiers.pMul;
+    let pMul = modifiers.pMul;
     if (weaponType.id == 2) {
         switch (modifiers.lsspirit) {
             case 1:
@@ -1210,14 +1210,14 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
     }
 
     // special considerations: charge blades
-    var cb_Exp = function(attackName, attack, modmul, modadd, res, phialc, phialt) {
+    let cb_Exp = function(attackName, attack, modmul, modadd, res, phialc, phialt) {
         if (phialt == 'Impact') {
-            var modlo = 0.05;
-            var modhi = 0.1;
+            let modlo = 0.05;
+            let modhi = 0.1;
         }
         else if (phialt == 'Element') {
-            var modlo = 2.5;
-            var modhi = 3.5;
+            let modlo = 2.5;
+            let modhi = 3.5;
         }
         if (attackName == 'Sword: Return Stroke' || attackName == 'Shield Attack' || attackName == 'Axe: Element Discharge 1' || attackName == 'Axe: Element Discharge 1 (Boost Mode)' || attackName == 'Axe: Dash Element Discharge 1' || attackName == 'Axe: Dash Element Discharge 1 (Boost Mode)') {
             return cb_ExpEq(attack, modmul, modadd, res, modlo, 1, 1);
@@ -1236,11 +1236,11 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         }
     };
 
-    var cb_ExpEq = function(attack, modmul, modadd, res, phialMulti, expCount, phialCount) {
+    let cb_ExpEq = function(attack, modmul, modadd, res, phialMulti, expCount, phialCount) {
         return Math.floor(Math.floor((attack + (modadd / 10)) * (1 + modmul) * (res / 100)) * phialMulti) * expCount * phialCount;
     };
 
-    var affinityBase = 0
+    let affinityBase = 0
     // modify affinity based on frenzy virus modifiers (and frenzy virus weapons)
     if (weapon.affinity_virus != null) {
         if (modifiers.vo === true) affinityBase = Math.abs(weapon.affinity) + weapon.affinity_virus;
@@ -1251,17 +1251,17 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         else affinityBase = weapon.affinity;
     }
 
-    var sharpnessMod = [0.5, 0.75, 1.0, 1.05, 1.2, 1.32, 1.45];
-    var sharpnessModE = [0.25, 0.5, 0.75, 1.0, 1.0625, 1.125, 1.2];
+    let sharpnessMod = [0.5, 0.75, 1.0, 1.05, 1.2, 1.32, 1.45];
+    let sharpnessModE = [0.25, 0.5, 0.75, 1.0, 1.0625, 1.125, 1.2];
 
-    var pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul, modifiers.pAdd, modifiers.cbo);
+    let pwr = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul, modifiers.pAdd, modifiers.cbo);
     // special considerations: switch axes
     if (weaponType.id == 9) {
-        var pwrSACharge = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd, modifiers.cbo);
+        let pwrSACharge = pPwr(weapon.attack, affinityBase + modifiers.aff, sharpnessMod[sharpness], pMul + 0.2, modifiers.pAdd, modifiers.cbo);
     }
-    var epwrs = [];
-    var etype = [];
-    var ecmod = 0;
+    let epwrs = [];
+    let etype = [];
+    let ecmod = 0;
 
     // set Elemental Crit (weapon-type dependent)
     if (modifiers.ec === true) {
@@ -1285,13 +1285,13 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         etype.push(element);
     });
 
-    var raw = [];
-    var rawE = [];
+    let raw = [];
+    let rawE = [];
     epwrs.map((epwr, i) => {
         rawE[i] = 0;
     });
-    for (var i = 0; i < motion.power.length; i++) {
-        var rawPower = pwr;
+    for (let i = 0; i < motion.power.length; i++) {
+        let rawPower = pwr;
 
         // switch axe charge damage
         if (weaponType.id == 9 && weapon.phial == 'Power' && motion.name.indexOf('Sword:') > -1) {
@@ -1307,8 +1307,8 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
         }
 
         if (epwrs.length > 0) {
-            var elementIndex = 0;
-            var emod = 1;
+            let elementIndex = 0;
+            let emod = 1;
             if (!(typeof motion.emod === 'undefined')) {
                 // grab elemental damage modifier from json
                 emod = motion.emod[i];
@@ -1322,7 +1322,7 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
                 elementIndex = motion.element[i];
             }
 
-            var elementType = etype[elementIndex].id - 1;
+            let elementType = etype[elementIndex].id - 1;
 
             if(elementType >= modifiers.elem.length) {
                 // element Type is one of the various status effects, skip it.
@@ -1339,8 +1339,8 @@ function calculateDamage(motion, weapon, weaponType, damage, sharpness, modifier
             }
         }
     }
-    var sum = raw.reduce(function(a, b) { return a + b; })
-    var totalDamage = sum;
+    let sum = raw.reduce(function(a, b) { return a + b; })
+    let totalDamage = sum;
     if(rawE.length > 0) {
         totalDamage += rawE.reduce(function(a, b) { return a + b; });
     }
