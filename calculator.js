@@ -117,6 +117,7 @@ class CalculatingPalicoX extends React.Component {
                         <div className="collapse navbar-collapse" id="navbar-collapse">
                             <ul className="nav navbar-nav navbar-right">
                                 <li>
+                                    <a href="http://patreon.com/mrmin123"><i className="material-icons">card_giftcard</i> patreon</a>
                                     <a href="http://github.com/mrmin123/the-calculating-palico-x"><i className="material-icons">code</i> view source on github</a>
                                 </li>
                             </ul>
